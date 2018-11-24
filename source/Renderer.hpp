@@ -18,6 +18,10 @@ public:
   void End();
   void Rect(int x, int y, int width, int height, const Color &color);
 
+  double GetDelta();
+
 private:
   SDL_Renderer *renderer_;
+  uint64_t last_tick_time_ = 0;
+  double delta_ = 0.0;
 };

@@ -1,3 +1,4 @@
+#include <SDL_timer.h>
 #include "Renderer.hpp"
 
 void Renderer::Rect(int x, int y, int width, int height, const Color &color) {
@@ -13,4 +14,11 @@ void Renderer::Begin() {
 
 void Renderer::End() {
   SDL_RenderPresent(renderer_);
+  uint64_t tick_time = SDL_GetPerformanceCounter();
+  delta_ = (tick_time - last_tick_time_) / float(SDL_GetPerformanceFrequency());
+  last_tick_time_ = tick_time;
+}
+
+double Renderer::GetDelta() {
+  return delta_;
 }
