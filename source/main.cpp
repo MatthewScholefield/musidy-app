@@ -7,19 +7,25 @@
 #include "CLI11.hpp"
 
 
-int main(int argc, char **argv) {
-  CLI::App app{"Dynamic Music Generation App"};
-  app.ignore_case();
+struct Arguments {
+  Arguments(int argc, char **argv) : app("Dynamic Music Generation App") {
+    app.ignore_case();
+    app.add_option("soundfont_file", instrument_file, "Soundfont file (.sf2) to play song with")->required();
+    app.add_option("-g,--gain", gain, "Volume gain of instrument (negative or positive decimal)");
+  }
 
+  CLI::App app;
   std::string instrument_file;
   float gain = 0.f;
-  app.add_option("soundfont_file", instrument_file, "Soundfont file (.sf2) to play song with")->required();
-  app.add_option("-g,--gain", gain, "Volume gain of instrument (negative or positive decimal)");
+};
 
-  CLI11_PARSE(app, argc, argv);
+
+int main(int argc, char **argv) {
+  Arguments args(argc, argv);
+  CLI11_PARSE(args.app, argc, argv);
 
   std::cout << "Loading instrument..." << std::endl;
-  Instrument instrument(instrument_file, gain);
+  Instrument instrument(args.instrument_file, args.gain);
   std::cout << "Starting app..." << std::endl;
 
   SdlWindow window;
