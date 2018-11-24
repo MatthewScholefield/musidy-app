@@ -4,6 +4,7 @@
 
 class SongGenerator {
 public:
+  explicit SongGenerator(Instrument &instrument);
   void Update(Instrument &instrument, double dt);
 
 private:
@@ -11,7 +12,7 @@ private:
 
   static constexpr double kNoteInterval = 0.2;
 
-  int note_ = 60;
+  int note_ = 0;
   double note_timer_ = 0.0;
   bool moving_up_ = true;
 };

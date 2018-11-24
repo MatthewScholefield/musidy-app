@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
   SdlWindow window;
   Renderer renderer(window.GetRaw());
   SoundSystem system([&](float *f, size_t n) { instrument.Render(f, n); });
-  SongGenerator generator;
+  SongGenerator generator(instrument);
 
   while (window.Update()) {
     renderer.Begin();
