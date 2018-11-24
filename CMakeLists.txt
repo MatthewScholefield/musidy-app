@@ -17,6 +17,7 @@ add_executable(
         source/main.cpp
         source/tsf.cpp
         source/Instrument.cpp
+        source/SongGenerator.cpp
 )
 
 target_link_libraries(musidy ${SDL2_LIBRARIES})
