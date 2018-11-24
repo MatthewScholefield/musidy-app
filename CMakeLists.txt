@@ -15,7 +15,9 @@ add_executable(
         source/SdlWindow.cpp
         source/SoundSystem.cpp
         source/main.cpp
-        source/tsf.cpp source/Instrument.cpp source/Instrument.hpp)
+        source/tsf.cpp
+        source/Instrument.cpp
+)
 
 target_link_libraries(musidy ${SDL2_LIBRARIES})
 target_link_libraries(musidy ${PORTAUDIOCPP_LIBRARIES})
