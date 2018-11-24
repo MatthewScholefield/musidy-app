@@ -6,10 +6,10 @@ Instrument::Instrument(const std::string &filename, float gain_db) :
   tsf_set_output(tsf_, TSF_STEREO_INTERLEAVED, SoundSystem::kSampleRate, gain_db);
 }
 
-void Instrument::play(int note, float volume) {
+void Instrument::Play(int note, float volume) {
   tsf_note_on(tsf_, 0, note, volume);
 }
 
-void Instrument::render(float *data, size_t n) {
+void Instrument::Render(float *data, size_t n) {
   tsf_render_float(tsf_, data, int(n), 0);
 }
