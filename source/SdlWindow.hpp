@@ -9,9 +9,9 @@ public:
 
   ~SdlWindow();
 
-  SDL_Window *getRaw();
-  bool update();
+  SDL_Window *GetRaw();
+  bool Update();
 
 private:
-  SDL_Window *window;
+  SDL_Window *window_;
 };

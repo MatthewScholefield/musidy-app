@@ -1,20 +1,20 @@
 #include <SDL_events.h>
 #include "SdlWindow.hpp"
 
-SdlWindow::SdlWindow() : window(SDL_CreateWindow(
+SdlWindow::SdlWindow() : window_(SDL_CreateWindow(
     "Jeu de la vie", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     640, 480, SDL_WINDOW_SHOWN
 )) {}
 
 SdlWindow::~SdlWindow() {
-  SDL_DestroyWindow(window);
+  SDL_DestroyWindow(window_);
 }
 
-SDL_Window *SdlWindow::getRaw() {
-  return window;
+SDL_Window *SdlWindow::GetRaw() {
+  return window_;
 }
 
-bool SdlWindow::update() {
+bool SdlWindow::Update() {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {

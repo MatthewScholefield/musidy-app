@@ -12,12 +12,12 @@ struct Color {
 
 class Renderer {
 public:
-  explicit Renderer(SDL_Window *window) : renderer(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)) {}
+  explicit Renderer(SDL_Window *window) : renderer_(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)) {}
 
-  void begin();
-  void end();
-  void rect(int x, int y, int width, int height, const Color &color);
+  void Begin();
+  void End();
+  void Rect(int x, int y, int width, int height, const Color &color);
 
 private:
-  SDL_Renderer *renderer;
+  SDL_Renderer *renderer_;
 };
