@@ -7,6 +7,8 @@ public:
   void Update(Instrument &instrument, double dt);
 
 private:
+  void UpdateBeat(Instrument &instrument);
+
   static constexpr double kNoteInterval = 0.2;
 
   int note_ = 60;
