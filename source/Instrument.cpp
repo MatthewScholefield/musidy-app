@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "Instrument.hpp"
 #include "SoundSystem.hpp"
 
@@ -14,11 +15,13 @@ Instrument::Instrument(const std::string &filename, float gain_db) :
 }
 
 void Instrument::Play(int note, float volume) {
-  if (note < 0) {
+  int num_octaves = int(std::floor(note / float(kNotesPerOctave)));
+  int scale_degree = note - num_octaves * kNotesPerOctave;
+  int chromatic = kStepsPerOctave * num_octaves + kHalfsteps[int(tonality_)][scale_degree];
+  chromatic += base_note_;
+  if (chromatic < 0) {
     throw std::runtime_error("Invalid note: " + std::to_string(note));
   }
-  int chromatic = kStepsPerOctave * (note / kNotesPerOctave) + kHalfsteps[int(tonality_)][note % kNotesPerOctave];
-  chromatic += base_note_;
   PlayRaw(chromatic, volume);
 }
 
@@ -33,4 +36,10 @@ void Instrument::Render(float *data, size_t n) {
 void Instrument::SetScale(int base_note, Tonality tonality) {
   base_note_ = base_note;
   tonality_= tonality;
+}
+
+void Instrument::PlayChord(int base, float volume) {
+  Play(base, volume);
+  Play(base + 2, volume);
+  Play(base + 4, volume);
 }

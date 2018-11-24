@@ -10,9 +10,9 @@ public:
 private:
   void UpdateBeat(Instrument &instrument);
 
-  static constexpr double kNoteInterval = 0.2;
+  static constexpr double kNoteInterval = 1.0;
 
-  int note_ = 0;
   double note_timer_ = 0.0;
-  bool moving_up_ = true;
+  int chord_pos_ = 0;
+  static const int kChords[];
 };

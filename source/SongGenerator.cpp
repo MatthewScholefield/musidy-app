@@ -1,5 +1,8 @@
 #include "SongGenerator.hpp"
 
+
+const int SongGenerator::kChords[] = {1, 6 - 7, 3, 0};
+
 SongGenerator::SongGenerator(Instrument &instrument) {
   instrument.SetScale(60, Tonality::kMinor);
 }
@@ -12,9 +15,6 @@ void SongGenerator::Update(Instrument &instrument, double dt) {
 }
 
 void SongGenerator::UpdateBeat(Instrument &instrument) {
-  instrument.Play(note_);
-  note_ += moving_up_ ? 1 : -1;
-  if (note_ >= Instrument::kNotesPerOctave || note_ <= 0) {
-    moving_up_ = !moving_up_;
-  }
+  instrument.PlayChord(kChords[chord_pos_] - 1, 0.6f);
+  chord_pos_ = (chord_pos_ + 1) % 4;
 }

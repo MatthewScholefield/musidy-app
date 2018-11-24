@@ -9,6 +9,7 @@ enum class Tonality : int {
   kMinorHarmonic = 2
 };
 
+
 class Instrument {
 public:
   static constexpr int kNotesPerOctave = 7, kStepsPerOctave = 12;
@@ -16,6 +17,7 @@ public:
 
   void SetScale(int base_note, Tonality tonality);
   void Play(int note, float volume = 1.f);
+  void PlayChord(int base, float volume = 1.f);
   void PlayRaw(int note, float volume = 1.f);
   void Render(float *data, size_t n);
 
