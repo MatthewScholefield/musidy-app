@@ -5,7 +5,8 @@
 
 enum class Tonality : int {
   kMajor = 0,
-  kMinor = 1
+  kMinor = 1,
+  kMinorHarmonic = 2
 };
 
 class Instrument {
@@ -23,5 +24,5 @@ private:
   int base_note_ = 60;
   Tonality tonality_ = Tonality::kMajor;
 
-  static const int kHalfsteps[2][kNotesPerOctave];
+  static const int kHalfsteps[][kNotesPerOctave];
 };

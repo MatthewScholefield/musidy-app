@@ -4,7 +4,8 @@
 
 constexpr int Instrument::kHalfsteps[][Instrument::kNotesPerOctave] = {
     {0, 2, 4, 5, 7, 9, 11},
-    {0, 2, 3, 5, 7, 8, 10}
+    {0, 2, 3, 5, 7, 8, 10},
+    {0, 2, 3, 5, 7, 8, 11}
 };
 
 Instrument::Instrument(const std::string &filename, float gain_db) :
