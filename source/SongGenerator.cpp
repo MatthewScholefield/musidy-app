@@ -15,6 +15,13 @@ void SongGenerator::Update(Instrument &instrument, double dt) {
 }
 
 void SongGenerator::UpdateBeat(Instrument &instrument) {
-  instrument.PlayChord(kChords[chord_pos_] - 1, 0.6f);
-  chord_pos_ = (chord_pos_ + 1) % 4;
+  if (arpeggio_note_ == 0) {
+    chord_pos_ = (chord_pos_ + 1) % 4;
+    instrument.PlayChord(kChords[chord_pos_] - 1, 0.6f);
+  }
+  instrument.Play(kChords[chord_pos_] - 1 + arpeggio_note_, 0.6f);
+  arpeggio_note_ += arpeggio_delta_;
+  if (arpeggio_note_ == 0 || arpeggio_note_ >= 4) {
+    arpeggio_delta_ *= -1;
+  }
 }
