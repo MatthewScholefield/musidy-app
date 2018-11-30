@@ -22,6 +22,7 @@ struct Arguments {
 
 
 int main(int argc, char **argv) {
+  srand(time(nullptr));
   Arguments args(argc, argv);
   CLI11_PARSE(args.app, argc, argv);
 
@@ -33,6 +34,11 @@ int main(int argc, char **argv) {
   Renderer renderer(window.GetRaw());
   SoundSystem system([&](float *f, size_t n) { instrument.Render(f, n); });
   SongGenerator generator(instrument);
+
+  for (int chord : generator.GetProgression()) {
+    std::cout << (chord % 7) + 1 << " ";
+  }
+  std::cout << std::endl;
 
   while (window.Update()) {
     renderer.Begin();
