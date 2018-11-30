@@ -2,7 +2,7 @@
 #include "SdlWindow.hpp"
 
 SdlWindow::SdlWindow() : window_(SDL_CreateWindow(
-    "Jeu de la vie", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    "Musidy", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     640, 480, SDL_WINDOW_SHOWN
 )) {}
 
