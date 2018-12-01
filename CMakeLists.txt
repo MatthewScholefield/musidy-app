@@ -14,7 +14,7 @@ add_library(
         source/Renderer.cpp
         source/SdlWindow.cpp
         source/SoundSystem.cpp
-        source/tsf.cpp
+        source/libs/tsf.cpp
         source/Instrument.cpp
         source/SongGenerator.cpp
         source/utils.cpp
@@ -27,6 +27,8 @@ add_executable(
         tests
         tests/TestSongGenerator.cpp
 )
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/source/libs)
 
 target_link_libraries(musidy musidy_common)
 target_link_libraries(musidy ${SDL2_LIBRARIES})
