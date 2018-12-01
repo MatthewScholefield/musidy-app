@@ -1,13 +1,18 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "tsf.h"
+#include "utils.hpp"
 
 enum class Tonality : int {
   kMajor = 0,
   kMinor = 1,
   kMinorHarmonic = 2
 };
+
+Tonality GetRandomTonality();
+std::string TonalityToString(Tonality tonality);
 
 
 class Instrument {
@@ -20,6 +25,7 @@ public:
   void PlayChord(int base, float volume = 1.f);
   void PlayRaw(int note, float volume = 1.f);
   void Render(float *data, size_t n);
+  Tonality GetTonality() const;
 
 private:
   tsf *tsf_;

@@ -43,3 +43,24 @@ void Instrument::PlayChord(int base, float volume) {
   Play(base + 2, volume);
   Play(base + 4, volume);
 }
+
+Tonality Instrument::GetTonality() const {
+  return tonality_;
+}
+
+Tonality GetRandomTonality() {
+  return Tonality(SelectSample({0.3f, 0.3f, 0.1f}));
+}
+
+std::string TonalityToString(Tonality tonality) {
+  switch (tonality) {
+    case Tonality::kMajor:
+      return "Major";
+    case Tonality::kMinor:
+      return "Minor";
+    case Tonality::kMinorHarmonic:
+      return "Harmonic";
+    default:
+      throw std::invalid_argument("Invalid tonality: " + std::to_string(int(tonality)));
+  }
+}

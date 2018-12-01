@@ -12,12 +12,11 @@ public:
   const std::vector<int> GetProgression() {
     return chords_;
   }
+  static int ClosestNote(int note, int source);
 
 private:
   void UpdateBeat(Instrument &instrument);
-
-  std::vector<int> GetChordSequence();
-
+  std::vector<int> GenerateProgression();
   static std::vector<float> GetChordProbs(int previous);
 
   static constexpr double kNoteInterval = 0.4;

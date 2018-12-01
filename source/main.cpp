@@ -35,8 +35,9 @@ int main(int argc, char **argv) {
   SoundSystem system([&](float *f, size_t n) { instrument.Render(f, n); });
   SongGenerator generator(instrument);
 
+  std::cout << "Tonality: " << TonalityToString(instrument.GetTonality()) << std::endl;
   for (int chord : generator.GetProgression()) {
-    std::cout << (chord % 7) + 1 << " ";
+    std::cout << ((chord + 7 * 100) % 7) + 1 << " ";
   }
   std::cout << std::endl;
 

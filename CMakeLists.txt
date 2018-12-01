@@ -9,16 +9,26 @@ pkg_check_modules(PORTAUDIO portaudio-2.0)
 pkg_check_modules(PORTAUDIOCPP portaudiocpp)
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${PORTAUDIO_INCLUDE_DIRS})
-add_executable(
-        musidy
+add_library(
+        musidy_common
         source/Renderer.cpp
         source/SdlWindow.cpp
         source/SoundSystem.cpp
-        source/main.cpp
         source/tsf.cpp
         source/Instrument.cpp
         source/SongGenerator.cpp
+        source/utils.cpp
+)
+add_executable(
+        musidy
+        source/main.cpp
+)
+add_executable(
+        tests
+        tests/TestSongGenerator.cpp
 )
 
+target_link_libraries(musidy musidy_common)
 target_link_libraries(musidy ${SDL2_LIBRARIES})
 target_link_libraries(musidy ${PORTAUDIOCPP_LIBRARIES})
+target_link_libraries(tests musidy_common)

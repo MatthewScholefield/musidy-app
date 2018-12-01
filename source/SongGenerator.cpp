@@ -3,8 +3,8 @@
 #include "SongGenerator.hpp"
 
 
-SongGenerator::SongGenerator(Instrument &instrument) : chords_(GetChordSequence()) {
-  instrument.SetScale(60, Tonality::kMinor);
+SongGenerator::SongGenerator(Instrument &instrument) : chords_(GenerateProgression()) {
+  instrument.SetScale(60, GetRandomTonality());
 }
 
 void SongGenerator::Update(Instrument &instrument, double dt) {
@@ -19,14 +19,16 @@ void SongGenerator::UpdateBeat(Instrument &instrument) {
     chord_pos_ = int((chord_pos_ + 1) % chords_.size());
     instrument.PlayChord(chords_[chord_pos_], 0.6f);
   }
-  instrument.Play(chords_[chord_pos_] + arpeggio_note_, 0.6f);
+  if ((chords_[chord_pos_] + 7 * 100) % 7 != 0 || arpeggio_note_ == 0 || chord_pos_ != chords_.size() - 1) {
+    instrument.Play(chords_[chord_pos_] + arpeggio_note_, 0.6f);
+  }
   arpeggio_note_ += arpeggio_delta_;
   if (arpeggio_note_ == 0 || arpeggio_note_ >= 4) {
     arpeggio_delta_ *= -1;
   }
 }
 
-std::vector<int> SongGenerator::GetChordSequence() {
+std::vector<int> SongGenerator::GenerateProgression() {
   std::vector<int> chords;
   chords.push_back(0);
   std::vector<int> chordFreq = {0, 0, 0, 0, 0, 0, 0};
@@ -35,39 +37,23 @@ std::vector<int> SongGenerator::GetChordSequence() {
 
     for (int i = 0; i < probs.size(); ++i) {
       int freq = chordFreq[i] + 1;
-//      if (freq > 0) {
-//        probs[i] = 0;
-//      }
-      probs[i] /= freq * freq;
+      probs[i] /= freq * freq * freq;
     }
 
-    float sum = 0.f;
-    for (auto i : probs) {
-      sum += i;
+    int chord = SelectSample(probs);
+    if (chord != 0) {
+      ++chordFreq[chord];
     }
-    float choice = sum * (rand() / float(INT_MAX));
-    for (int i = 0; i < probs.size(); ++i) {
-      choice -= probs[i];
-      if (choice < 0) {
-        ++chordFreq[i];
-        int chordDist = std::abs(chords.back() - i);
-        int otherDist = std::abs(chords.back() - (i + 7));
-        int other2Dist = std::abs(chords.back() - (i - 7));
-        if (otherDist < chordDist) {
-          chordDist = otherDist;
-          i += 7;
-        }
-        if (other2Dist < chordDist) {
-          i -= 7;
-        }
-        chords.push_back(i);
-        break;
-      }
-    }
-  } while ((chords.back() + 100 * 7) % 7 != 0);
+
+    chords.push_back(ClosestNote(chord, chords.back()));
+  } while ((chords.back() + 100 * 7) % 7 != 0 || chords.size() < 4);
 
   if (chords.size() % 2 == 1) {
-    chords.pop_back();
+    if (chords.size() >= 7) {
+      chords.push_back(ClosestNote(0, chords.back()));
+    } else {
+      chords.pop_back();
+    }
   }
 
   return chords;
@@ -94,4 +80,19 @@ std::vector<float> SongGenerator::GetChordProbs(int previous) {
     default:
       throw std::invalid_argument("Invalid chord: " + std::to_string(previous));
   }
+}
+
+int SongGenerator::ClosestNote(int note, int source) {
+  int noteDist = std::abs(note - source);
+  int otherDist = std::abs(note + 7 - source);
+  int other2Dist = std::abs(note -  7 - source);
+  int bestNote = note;
+  if (otherDist < noteDist) {
+    noteDist = otherDist;
+    bestNote = note + 7;
+  }
+  if (other2Dist < noteDist) {
+    bestNote = note - 7;
+  }
+  return bestNote;
 }
