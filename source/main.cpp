@@ -22,7 +22,7 @@ struct Arguments {
 
 
 int main(int argc, char **argv) {
-    srand(time(nullptr));
+    srand((unsigned int) time(nullptr));
     Arguments args(argc, argv);
     CLI11_PARSE(args.app, argc, argv);
 
