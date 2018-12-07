@@ -18,6 +18,14 @@ public:
     void finish();
     void rect(float x, float y, float width, float height, const Color &color);
 
+    float getXMargin() {
+        return window.getXOffset() / float(window.getScale());
+    }
+
+    float getYMargin() {
+        return window.getYOffset() / float(window.getScale());
+    }
+
     double getDelta();
 
 private:

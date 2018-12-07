@@ -1,10 +1,13 @@
 #include <SDL_events.h>
+#include <iostream>
 #include "SdlWindow.hpp"
 
 SdlWindow::SdlWindow() : window(SDL_CreateWindow(
         "Musidy", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        width, height, SDL_WINDOW_SHOWN
-)) {}
+        640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+)) {
+    resize(640, 480);
+}
 
 SdlWindow::~SdlWindow() {
     SDL_DestroyWindow(window);
@@ -33,10 +36,9 @@ bool SdlWindow::update() {
                 }
                 break;
             case SDL_WINDOWEVENT:
-                switch (event.window.type) {
+                switch (event.window.event) {
                     case SDL_WINDOWEVENT_RESIZED:
-                        width = event.window.data1;
-                        height = event.window.data2;
+                        resize(event.window.data1, event.window.data2);
                         break;
                     default:
                         break;
@@ -49,16 +51,26 @@ bool SdlWindow::update() {
     return true;
 }
 
-int SdlWindow::getWidth() {
-    return width;
+int SdlWindow::getXOffset() {
+    return xOffset;
 }
 
-int SdlWindow::getHeight() {
-    return height;
+int SdlWindow::getYOffset() {
+    return yOffset;
+}
+
+int SdlWindow::getScale() {
+    return scale;
+}
+
+void SdlWindow::resize(int sx, int sy) {
+    scale = std::min(sx, sy);
+    xOffset = (sx - scale) / 2;
+    yOffset = (sy - scale) / 2;
 }
 
 void SdlWindow::onMouse(int x, int y) {
     for (const auto &i : touchInputHandlers) {
-        i(x / float(width), y / float(height));
+        i((x - xOffset)/ float(scale), (y - yOffset) / float(scale));
     }
 }

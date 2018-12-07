@@ -76,10 +76,10 @@ static float randFloat() {
 void SongGenerator::updateBeat(Instrument &instrument) {
     if (arpeggioNote == 0) {
         chordPos = int((chordPos + 1) % chords.size());
-        for (int i = 0; i < 100; ++i) {
+        for (int i = 0; i < 400; ++i) {
             particles.add(Particle(
-                    randFloat(),
-                    randFloat(),
+                    -1.f + 3.f * randFloat(),
+                    -1.f + 3.f * randFloat(),
                     0.6f * randFloat() - 0.3f,
                     0.6f * randFloat() - 0.3f,
                     Color({100 + int(155 * randFloat()), 0, 0})

@@ -1,4 +1,5 @@
 #include <SDL_timer.h>
+#include <iostream>
 #include "Renderer.hpp"
 
 Color::Color(int r, int g, int b, int a) :
@@ -11,7 +12,7 @@ Renderer::Renderer(SdlWindow &window) :
 }
 
 void Renderer::rect(float x, float y, float width, float height, const Color &color) {
-    SDL_Rect rect{tx(x), ty(y), tx(width), ty(height)};
+    SDL_Rect rect{tx(x), ty(y), int(width * window.getScale()), int(height * window.getScale())};
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     SDL_RenderFillRect(renderer, &rect);
 }
@@ -33,9 +34,9 @@ double Renderer::getDelta() {
 }
 
 int Renderer::tx(float x) {
-    return int(x * window.getWidth());
+    return int((getXMargin() + x) * window.getScale());
 }
 
 int Renderer::ty(float y) {
-    return int(y * window.getHeight());
+    return int((getYMargin() + y) * window.getScale());
 }
