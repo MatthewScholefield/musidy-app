@@ -15,33 +15,6 @@ void SongGenerator::update(Instrument &instrument, double dt) {
   }
 }
 
-float randFloat() {
-  return rand() / float(INT_MAX);
-}
-
-void SongGenerator::updateBeat(Instrument &instrument) {
-  if (arpeggioNote == 0) {
-    chordPos = int((chordPos + 1) % chords.size());
-    for (int i = 0; i < 100; ++i) {
-      particles.add(Particle(
-          randFloat(),
-          randFloat(),
-          0.6f * randFloat() - 0.3f,
-          0.6f * randFloat() - 0.3f,
-          Color({100 + int(155 * randFloat()), 0, 0})
-      ));
-    }
-    instrument.playChord(chords[chordPos], 0.6f);
-  }
-  if ((chords[chordPos] + 7 * 100) % 7 != 0 || arpeggioNote == 0 || chordPos != chords.size() - 1) {
-    instrument.play(chords[chordPos] + arpeggioNote, 0.6f);
-  }
-  arpeggioNote += arpeggioDelta;
-  if (arpeggioNote == 0 || arpeggioNote >= 4) {
-    arpeggioDelta *= -1;
-  }
-}
-
 std::vector<int> SongGenerator::generateProgression() {
   std::vector<int> chords;
   chords.push_back(0);
@@ -73,6 +46,56 @@ std::vector<int> SongGenerator::generateProgression() {
   return chords;
 }
 
+int SongGenerator::closestNote(int note, int source) {
+  int noteDist = std::abs(note - source);
+  int otherDist = std::abs(note + 7 - source);
+  int other2Dist = std::abs(note - 7 - source);
+  int bestNote = note;
+  if (otherDist < noteDist) {
+    noteDist = otherDist;
+    bestNote = note + 7;
+  }
+  if (other2Dist < noteDist) {
+    bestNote = note - 7;
+  }
+  return bestNote;
+}
+
+const std::vector<int> SongGenerator::getProgression() {
+  return chords;
+}
+
+void SongGenerator::setDelta(float dt) {
+  noteInterval = dt;
+}
+
+static float randFloat() {
+  return rand() / float(INT_MAX);
+}
+
+void SongGenerator::updateBeat(Instrument &instrument) {
+  if (arpeggioNote == 0) {
+    chordPos = int((chordPos + 1) % chords.size());
+    for (int i = 0; i < 100; ++i) {
+      particles.add(Particle(
+              randFloat(),
+              randFloat(),
+              0.6f * randFloat() - 0.3f,
+              0.6f * randFloat() - 0.3f,
+              Color({100 + int(155 * randFloat()), 0, 0})
+      ));
+    }
+    instrument.playChord(chords[chordPos], 0.6f);
+  }
+  if ((chords[chordPos] + 7 * 100) % 7 != 0 || arpeggioNote == 0 || chordPos != chords.size() - 1) {
+    instrument.play(chords[chordPos] + arpeggioNote, 0.6f);
+  }
+  arpeggioNote += arpeggioDelta;
+  if (arpeggioNote == 0 || arpeggioNote >= 4) {
+    arpeggioDelta *= -1;
+  }
+}
+
 std::vector<float> SongGenerator::getChordProbs(int previous) {
   switch ((previous + 1 + 7 * 100) % 7) {
     case 0:
@@ -94,19 +117,4 @@ std::vector<float> SongGenerator::getChordProbs(int previous) {
     default:
       throw std::invalid_argument("Invalid chord: " + std::to_string(previous));
   }
-}
-
-int SongGenerator::closestNote(int note, int source) {
-  int noteDist = std::abs(note - source);
-  int otherDist = std::abs(note + 7 - source);
-  int other2Dist = std::abs(note - 7 - source);
-  int bestNote = note;
-  if (otherDist < noteDist) {
-    noteDist = otherDist;
-    bestNote = note + 7;
-  }
-  if (other2Dist < noteDist) {
-    bestNote = note - 7;
-  }
-  return bestNote;
 }

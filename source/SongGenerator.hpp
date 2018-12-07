@@ -10,14 +10,9 @@ public:
   explicit SongGenerator(Instrument &instrument, ParticleSystem &particles);
   void update(Instrument &instrument, double dt);
 
-  const std::vector<int> getProgression() {
-    return chords;
-  }
   static int closestNote(int note, int source);
-
-  void setDelta(float dt) {
-    noteInterval = dt;
-  }
+  const std::vector<int> getProgression();
+  void setDelta(float dt);
 
 private:
   void updateBeat(Instrument &instrument);
@@ -25,7 +20,6 @@ private:
   static std::vector<float> getChordProbs(int previous);
 
   double noteInterval = 0.4;
-
   double noteTimer = 0.0;
   int chordPos = -1;
   int arpeggioNote = 0;

@@ -10,6 +10,10 @@ SdlWindow::~SdlWindow() {
   SDL_DestroyWindow(window);
 }
 
+void SdlWindow::onTouchInput(const SdlWindow::TouchInputHandler &inputHandler) {
+  touchInputHandlers.push_back(inputHandler);
+}
+
 SDL_Window *SdlWindow::getRaw() {
   return window;
 }

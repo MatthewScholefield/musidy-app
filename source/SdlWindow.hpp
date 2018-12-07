@@ -6,22 +6,16 @@
 
 class SdlWindow {
 public:
-  SdlWindow();
-  SdlWindow(const SdlWindow &other) = delete;
-
   using TouchInputHandler = std::function<void(float, float)>;
 
-  void onTouchInput(const TouchInputHandler &inputHandler) {
-    touchInputHandlers.push_back(inputHandler);
-  }
-
+  SdlWindow();
+  SdlWindow(const SdlWindow &other) = delete;
   ~SdlWindow();
 
+  void onTouchInput(const TouchInputHandler &inputHandler);
   SDL_Window *getRaw();
   bool update();
-
   int getWidth();
-
   int getHeight();
 
 private:

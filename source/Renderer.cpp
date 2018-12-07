@@ -1,6 +1,9 @@
 #include <SDL_timer.h>
 #include "Renderer.hpp"
 
+Color::Color(int r, int g, int b, int a) :
+        r(uint8_t(r)), g(uint8_t(g)), b(uint8_t(b)), a(uint8_t(a)) {}
+
 Renderer::Renderer(SdlWindow &window) :
     renderer(SDL_CreateRenderer(window.getRaw(), -1, SDL_RENDERER_ACCELERATED)),
     lastTickTime(SDL_GetPerformanceCounter()), window(window) {
@@ -27,4 +30,12 @@ void Renderer::finish() {
 
 double Renderer::getDelta() {
   return delta;
+}
+
+int Renderer::tx(float x) {
+  return int(x * window.getWidth());
+}
+
+int Renderer::ty(float y) {
+  return int(y * window.getHeight());
 }

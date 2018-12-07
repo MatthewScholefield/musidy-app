@@ -5,10 +5,9 @@
 #include "SdlWindow.hpp"
 
 struct Color {
-  Color(int r, int g, int b, int a = 255) :
-      r(uint8_t(r)), g(uint8_t(g)), b(uint8_t(b)), a(uint8_t(a)) {}
+  Color(int r, int g, int b, int a = 255);
 
-  uint8_t r, g, b, a = 255;
+  uint8_t r, g, b, a;
 };
 
 class Renderer {
@@ -22,13 +21,8 @@ public:
   double getDelta();
 
 private:
-  int tx(float x) {
-    return int(x * window.getWidth());
-  }
-
-  int ty(float y) {
-    return int(y * window.getHeight());
-  }
+  int tx(float x);
+  int ty(float y);
 
   SDL_Renderer *renderer;
   uint64_t lastTickTime;
