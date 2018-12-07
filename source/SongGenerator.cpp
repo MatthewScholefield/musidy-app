@@ -23,8 +23,13 @@ void SongGenerator::UpdateBeat(Instrument &instrument) {
   if (arpeggio_note_ == 0) {
     chord_pos_ = int((chord_pos_ + 1) % chords_.size());
     for (int i = 0; i < 100; ++i) {
-      particles_.Add({randFloat(), randFloat(), 0.6f * randFloat() - 0.3f, 0.6f * randFloat() - 0.3f,
-                      Color({100 + int(155 * randFloat()), 0, 0})});
+      particles_.Add(Particle(
+          randFloat(),
+          randFloat(),
+          0.6f * randFloat() - 0.3f,
+          0.6f * randFloat() - 0.3f,
+          Color({100 + int(155 * randFloat()), 0, 0})
+      ));
     }
     instrument.PlayChord(chords_[chord_pos_], 0.6f);
   }
