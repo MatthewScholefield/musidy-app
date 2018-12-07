@@ -4,23 +4,23 @@
 
 class Particle {
 public:
-  Particle(float x, float y, float vx, float vy, Color color, double timeLeft = 1.0);
+    Particle(float x, float y, float vx, float vy, Color color, double timeLeft = 1.0);
 
-  void render(Renderer &renderer);
-  bool update(double dt);
+    void render(Renderer &renderer);
+    bool update(double dt);
 
 private:
-  float x, y, vx, vy;
-  Color color;
-  double timeLeft = 1.0;
+    float x, y, vx, vy;
+    Color color;
+    double timeLeft = 1.0;
 };
 
 class ParticleSystem {
 public:
-  void render(Renderer &renderer);
-  void update(double dt);
-  void add(Particle particle);
+    void render(Renderer &renderer);
+    void update(double dt);
+    void add(Particle particle);
 
 private:
-  std::vector<Particle> particles;
+    std::vector<Particle> particles;
 };

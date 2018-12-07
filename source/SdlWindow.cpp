@@ -2,63 +2,63 @@
 #include "SdlWindow.hpp"
 
 SdlWindow::SdlWindow() : window(SDL_CreateWindow(
-    "Musidy", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-    width, height, SDL_WINDOW_SHOWN
+        "Musidy", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        width, height, SDL_WINDOW_SHOWN
 )) {}
 
 SdlWindow::~SdlWindow() {
-  SDL_DestroyWindow(window);
+    SDL_DestroyWindow(window);
 }
 
 void SdlWindow::onTouchInput(const SdlWindow::TouchInputHandler &inputHandler) {
-  touchInputHandlers.push_back(inputHandler);
+    touchInputHandlers.push_back(inputHandler);
 }
 
 SDL_Window *SdlWindow::getRaw() {
-  return window;
+    return window;
 }
 
 bool SdlWindow::update() {
-  SDL_Event event;
-  while (SDL_PollEvent(&event)) {
-    switch (event.type) {
-      case SDL_QUIT:
-        return false;
-      case SDL_MOUSEBUTTONDOWN:
-        onMouse(event.button.x, event.button.y);
-        break;
-      case SDL_MOUSEMOTION:
-        if (event.motion.state & SDL_BUTTON_LMASK) {
-          onMouse(event.motion.x, event.motion.y);
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                return false;
+            case SDL_MOUSEBUTTONDOWN:
+                onMouse(event.button.x, event.button.y);
+                break;
+            case SDL_MOUSEMOTION:
+                if (event.motion.state & SDL_BUTTON_LMASK) {
+                    onMouse(event.motion.x, event.motion.y);
+                }
+                break;
+            case SDL_WINDOWEVENT:
+                switch (event.window.type) {
+                    case SDL_WINDOWEVENT_RESIZED:
+                        width = event.window.data1;
+                        height = event.window.data2;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
         }
-        break;
-      case SDL_WINDOWEVENT:
-        switch(event.window.type) {
-          case SDL_WINDOWEVENT_RESIZED:
-            width = event.window.data1;
-            height = event.window.data2;
-            break;
-          default:
-            break;
-        }
-        break;
-      default:
-        break;
     }
-  }
-  return true;
+    return true;
 }
 
 int SdlWindow::getWidth() {
-  return width;
+    return width;
 }
 
 int SdlWindow::getHeight() {
-  return height;
+    return height;
 }
 
 void SdlWindow::onMouse(int x, int y) {
-  for (const auto &i : touchInputHandlers) {
-    i(x / float(width), y / float(height));
-  }
+    for (const auto &i : touchInputHandlers) {
+        i(x / float(width), y / float(height));
+    }
 }

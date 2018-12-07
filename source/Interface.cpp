@@ -1,5 +1,4 @@
 #include "Interface.hpp"
-#include "Renderer.hpp"
 
 Interface::Interface(SongGenerator &generator, SdlWindow &window) : generator(generator) {
     window.onTouchInput([&](float x, float y) { onTouchInput(x, y); });

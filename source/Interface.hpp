@@ -7,12 +7,12 @@
 
 class Interface {
 public:
-  explicit Interface(SongGenerator &generator, SdlWindow &window);
-  void render(Renderer &renderer);
+    explicit Interface(SongGenerator &generator, SdlWindow &window);
+    void render(Renderer &renderer);
 
 private:
-  void onTouchInput(float x, float y);
+    void onTouchInput(float x, float y);
 
-  float bx = 0.5f, by = 0.5f;
-  SongGenerator &generator;
+    float bx = 0.5f, by = 0.5f;
+    SongGenerator &generator;
 };
