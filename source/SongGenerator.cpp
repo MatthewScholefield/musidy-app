@@ -3,7 +3,8 @@
 #include "SongGenerator.hpp"
 
 
-SongGenerator::SongGenerator(Instrument &instrument) : chords_(GenerateProgression()) {
+SongGenerator::SongGenerator(Instrument &instrument, ParticleSystem &particles) :
+    chords_(GenerateProgression()), particles_(particles) {
   instrument.SetScale(60, GetRandomTonality());
 }
 
@@ -14,9 +15,17 @@ void SongGenerator::Update(Instrument &instrument, double dt) {
   }
 }
 
+float randFloat() {
+  return rand() / float(INT_MAX);
+}
+
 void SongGenerator::UpdateBeat(Instrument &instrument) {
   if (arpeggio_note_ == 0) {
     chord_pos_ = int((chord_pos_ + 1) % chords_.size());
+    for (int i = 0; i < 100; ++i) {
+      particles_.Add({randFloat(), randFloat(), 0.6f * randFloat() - 0.3f, 0.6f * randFloat() - 0.3f,
+                      Color({100 + int(155 * randFloat()), 0, 0})});
+    }
     instrument.PlayChord(chords_[chord_pos_], 0.6f);
   }
   if ((chords_[chord_pos_] + 7 * 100) % 7 != 0 || arpeggio_note_ == 0 || chord_pos_ != chords_.size() - 1) {
@@ -85,7 +94,7 @@ std::vector<float> SongGenerator::GetChordProbs(int previous) {
 int SongGenerator::ClosestNote(int note, int source) {
   int noteDist = std::abs(note - source);
   int otherDist = std::abs(note + 7 - source);
-  int other2Dist = std::abs(note -  7 - source);
+  int other2Dist = std::abs(note - 7 - source);
   int bestNote = note;
   if (otherDist < noteDist) {
     noteDist = otherDist;

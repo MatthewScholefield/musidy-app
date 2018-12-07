@@ -3,10 +3,11 @@
 #include <vector>
 #include <stdexcept>
 #include "Instrument.hpp"
+#include "ParticleSystem.hpp"
 
 class SongGenerator {
 public:
-  explicit SongGenerator(Instrument &instrument);
+  explicit SongGenerator(Instrument &instrument, ParticleSystem &particles);
   void Update(Instrument &instrument, double dt);
 
   const std::vector<int> GetProgression() {
@@ -30,4 +31,5 @@ private:
   int arpeggio_note_ = 0;
   int arpeggio_delta_ = 2;
   std::vector<int> chords_;
+  ParticleSystem &particles_;
 };

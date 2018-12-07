@@ -19,7 +19,7 @@ add_library(
         source/SongGenerator.cpp
         source/utils.cpp
         source/Interface.cpp
-)
+        source/ParticleSystem.cpp source/ParticleSystem.hpp)
 add_executable(
         musidy
         source/main.cpp

@@ -7,6 +7,7 @@
 #include "CLI11.hpp"
 #include "SongGenerator.hpp"
 #include "Interface.hpp"
+#include "ParticleSystem.hpp"
 
 
 struct Arguments {
@@ -33,8 +34,9 @@ int main(int argc, char **argv) {
 
   SdlWindow window;
   Renderer renderer(window);
+  ParticleSystem particles;
   SoundSystem system([&](float *f, size_t n) { instrument.Render(f, n); });
-  SongGenerator generator(instrument);
+  SongGenerator generator(instrument, particles);
   Interface interface(generator, window);
 
   std::cout << "Tonality: " << TonalityToString(instrument.GetTonality()) << std::endl;
@@ -45,9 +47,13 @@ int main(int argc, char **argv) {
 
   while (window.Update()) {
     renderer.Begin(100, 100, 100);
+    particles.Render(renderer);
     interface.Render(renderer);
     renderer.End();
 
-    generator.Update(instrument, renderer.GetDelta());
+
+    double dt = renderer.GetDelta();
+    generator.Update(instrument, dt);
+    particles.Update(dt);
   }
 }
