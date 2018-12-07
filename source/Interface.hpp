@@ -7,19 +7,19 @@
 
 class Interface {
 public:
-  explicit Interface(SongGenerator &generator, SdlWindow &window) : generator_(generator) {
-    window.OnTouchInput([&](float x, float y){OnTouchInput(x, y);});
+  explicit Interface(SongGenerator &generator, SdlWindow &window) : generator(generator) {
+    window.onTouchInput([&](float x, float y) { onTouchInput(x, y); });
   }
-  void Render(Renderer &renderer) {
-    renderer.Rect(bx, by, 0.1f, 0.1f, {200, 200, 180});
+  void render(Renderer &renderer) {
+    renderer.rect(bx, by, 0.1f, 0.1f, {200, 200, 180});
   }
-  void OnTouchInput(float x, float y) {
+  void onTouchInput(float x, float y) {
     bx = x;
     by = y;
-    generator_.SetDelta(x);
+    generator.setDelta(x);
   }
 
 private:
   float bx = 0.5f, by = 0.5f;
-  SongGenerator &generator_;
+  SongGenerator &generator;
 };

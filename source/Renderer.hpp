@@ -15,23 +15,23 @@ class Renderer {
 public:
   explicit Renderer(SdlWindow &window);
 
-  void Begin(Uint8 r, Uint8 g, Uint8 b);
-  void End();
-  void Rect(float x, float y, float width, float height, const Color &color);
+  void begin(Uint8 r, Uint8 g, Uint8 b);
+  void finish();
+  void rect(float x, float y, float width, float height, const Color &color);
 
-  double GetDelta();
+  double getDelta();
 
 private:
   int tx(float x) {
-    return int(x * window_.GetWidth());
+    return int(x * window.getWidth());
   }
 
   int ty(float y) {
-    return int(y * window_.GetHeight());
+    return int(y * window.getHeight());
   }
 
-  SDL_Renderer *renderer_;
-  uint64_t last_tick_time_;
-  double delta_ = 0.0;
-  SdlWindow &window_;
+  SDL_Renderer *renderer;
+  uint64_t lastTickTime;
+  double delta = 0.0;
+  SdlWindow &window;
 };

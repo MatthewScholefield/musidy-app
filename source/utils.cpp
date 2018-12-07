@@ -1,7 +1,7 @@
 #include "utils.hpp"
 
 
-int SelectSample(const std::vector<float> &probs) {
+int selectSample(const std::vector<float> &probs) {
   float sum = 0.f;
   for (auto i : probs) {
     sum += i;

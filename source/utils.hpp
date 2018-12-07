@@ -4,4 +4,4 @@
 #include <cstdlib>
 #include <stdexcept>
 
-int SelectSample(const std::vector<float> &probs);
+int selectSample(const std::vector<float> &probs);

@@ -6,31 +6,31 @@
 #include "utils.hpp"
 
 enum class Tonality : int {
-  kMajor = 0,
-  kMinor = 1,
-  kMinorHarmonic = 2
+  Major = 0,
+  Minor = 1,
+  MinorHarmonic = 2
 };
 
-Tonality GetRandomTonality();
-std::string TonalityToString(Tonality tonality);
+Tonality getRandomTonality();
+std::string tonalityToString(Tonality tonality);
 
 
 class Instrument {
 public:
-  static constexpr int kNotesPerOctave = 7, kStepsPerOctave = 12;
-  explicit Instrument(const std::string &filename, float gain_db = 0);
+  static constexpr int notesPerOctave = 7, stepsPerOctave = 12;
+  explicit Instrument(const std::string &filename, float gainDb = 0);
 
-  void SetScale(int base_note, Tonality tonality);
-  void Play(int note, float volume = 1.f);
-  void PlayChord(int base, float volume = 1.f);
-  void PlayRaw(int note, float volume = 1.f);
-  void Render(float *data, size_t n);
-  Tonality GetTonality() const;
+  void setScale(int baseNote, Tonality tonality);
+  void play(int note, float volume = 1.f);
+  void playChord(int base, float volume = 1.f);
+  void playRaw(int note, float volume = 1.f);
+  void render(float *data, size_t n);
+  Tonality getTonality() const;
 
 private:
-  tsf *tsf_;
-  int base_note_ = 60;
-  Tonality tonality_ = Tonality::kMajor;
+  tsf *soundFont;
+  int baseNote = 60;
+  Tonality tonality = Tonality::Major;
 
-  static const int kHalfsteps[][kNotesPerOctave];
+  static const int halfSteps[][notesPerOctave];
 };

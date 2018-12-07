@@ -4,14 +4,14 @@
 
 
 SongGenerator::SongGenerator(Instrument &instrument, ParticleSystem &particles) :
-    chords_(GenerateProgression()), particles_(particles) {
-  instrument.SetScale(60, GetRandomTonality());
+    chords(generateProgression()), particles(particles) {
+  instrument.setScale(60, getRandomTonality());
 }
 
-void SongGenerator::Update(Instrument &instrument, double dt) {
-  if ((note_timer_ -= dt) < 0.0) {
-    note_timer_ = note_interval_;
-    UpdateBeat(instrument);
+void SongGenerator::update(Instrument &instrument, double dt) {
+  if ((noteTimer -= dt) < 0.0) {
+    noteTimer = noteInterval;
+    updateBeat(instrument);
   }
 }
 
@@ -19,11 +19,11 @@ float randFloat() {
   return rand() / float(INT_MAX);
 }
 
-void SongGenerator::UpdateBeat(Instrument &instrument) {
-  if (arpeggio_note_ == 0) {
-    chord_pos_ = int((chord_pos_ + 1) % chords_.size());
+void SongGenerator::updateBeat(Instrument &instrument) {
+  if (arpeggioNote == 0) {
+    chordPos = int((chordPos + 1) % chords.size());
     for (int i = 0; i < 100; ++i) {
-      particles_.Add(Particle(
+      particles.add(Particle(
           randFloat(),
           randFloat(),
           0.6f * randFloat() - 0.3f,
@@ -31,40 +31,40 @@ void SongGenerator::UpdateBeat(Instrument &instrument) {
           Color({100 + int(155 * randFloat()), 0, 0})
       ));
     }
-    instrument.PlayChord(chords_[chord_pos_], 0.6f);
+    instrument.playChord(chords[chordPos], 0.6f);
   }
-  if ((chords_[chord_pos_] + 7 * 100) % 7 != 0 || arpeggio_note_ == 0 || chord_pos_ != chords_.size() - 1) {
-    instrument.Play(chords_[chord_pos_] + arpeggio_note_, 0.6f);
+  if ((chords[chordPos] + 7 * 100) % 7 != 0 || arpeggioNote == 0 || chordPos != chords.size() - 1) {
+    instrument.play(chords[chordPos] + arpeggioNote, 0.6f);
   }
-  arpeggio_note_ += arpeggio_delta_;
-  if (arpeggio_note_ == 0 || arpeggio_note_ >= 4) {
-    arpeggio_delta_ *= -1;
+  arpeggioNote += arpeggioDelta;
+  if (arpeggioNote == 0 || arpeggioNote >= 4) {
+    arpeggioDelta *= -1;
   }
 }
 
-std::vector<int> SongGenerator::GenerateProgression() {
+std::vector<int> SongGenerator::generateProgression() {
   std::vector<int> chords;
   chords.push_back(0);
   std::vector<int> chordFreq = {0, 0, 0, 0, 0, 0, 0};
   do {
-    auto probs = GetChordProbs(chords.back());
+    auto probs = getChordProbs(chords.back());
 
     for (int i = 0; i < probs.size(); ++i) {
       int freq = chordFreq[i] + 1;
       probs[i] /= freq * freq * freq;
     }
 
-    int chord = SelectSample(probs);
+    int chord = selectSample(probs);
     if (chord != 0) {
       ++chordFreq[chord];
     }
 
-    chords.push_back(ClosestNote(chord, chords.back()));
+    chords.push_back(closestNote(chord, chords.back()));
   } while ((chords.back() + 100 * 7) % 7 != 0 || chords.size() < 4);
 
   if (chords.size() % 2 == 1) {
     if (chords.size() >= 7) {
-      chords.push_back(ClosestNote(0, chords.back()));
+      chords.push_back(closestNote(0, chords.back()));
     } else {
       chords.pop_back();
     }
@@ -73,7 +73,7 @@ std::vector<int> SongGenerator::GenerateProgression() {
   return chords;
 }
 
-std::vector<float> SongGenerator::GetChordProbs(int previous) {
+std::vector<float> SongGenerator::getChordProbs(int previous) {
   switch ((previous + 1 + 7 * 100) % 7) {
     case 0:
       return {0, 0.2f, 0.6f, 0.8f, 0.5f, 0.4f, 0};
@@ -96,7 +96,7 @@ std::vector<float> SongGenerator::GetChordProbs(int previous) {
   }
 }
 
-int SongGenerator::ClosestNote(int note, int source) {
+int SongGenerator::closestNote(int note, int source) {
   int noteDist = std::abs(note - source);
   int otherDist = std::abs(note + 7 - source);
   int other2Dist = std::abs(note - 7 - source);

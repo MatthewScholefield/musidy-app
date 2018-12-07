@@ -11,23 +11,23 @@ public:
 
   using TouchInputHandler = std::function<void(float, float)>;
 
-  void OnTouchInput(const TouchInputHandler &input_handler) {
-    touch_input_handlers_.push_back(input_handler);
+  void onTouchInput(const TouchInputHandler &inputHandler) {
+    touchInputHandlers.push_back(inputHandler);
   }
 
   ~SdlWindow();
 
-  SDL_Window *GetRaw();
-  bool Update();
+  SDL_Window *getRaw();
+  bool update();
 
-  int GetWidth();
+  int getWidth();
 
-  int GetHeight();
+  int getHeight();
 
 private:
-  void OnMouse(int x, int y);
+  void onMouse(int x, int y);
 
-  std::vector<TouchInputHandler> touch_input_handlers_;
-  int width_ = 640, height_ = 480;
-  SDL_Window *window_;
+  std::vector<TouchInputHandler> touchInputHandlers;
+  int width = 640, height = 480;
+  SDL_Window *window;
 };

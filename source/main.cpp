@@ -13,12 +13,12 @@
 struct Arguments {
   Arguments(int argc, char **argv) : app("Dynamic Music Generation App") {
     app.ignore_case();
-    app.add_option("soundfont_file", instrument_file, "Soundfont file (.sf2) to play song with")->required();
+    app.add_option("soundfont_file", instrument, "Soundfont file (.sf2) to play song with")->required();
     app.add_option("-g,--gain", gain, "Volume gain of instrument (negative or positive decimal)");
   }
 
   CLI::App app;
-  std::string instrument_file;
+  std::string instrument;
   float gain = 0.f;
 };
 
@@ -29,32 +29,31 @@ int main(int argc, char **argv) {
   CLI11_PARSE(args.app, argc, argv);
 
   std::cout << "Loading instrument..." << std::endl;
-  Instrument instrument(args.instrument_file, args.gain);
+  Instrument instrument(args.instrument, args.gain);
   std::cout << "Starting app..." << std::endl;
 
   SdlWindow window;
   Renderer renderer(window);
   ParticleSystem particles;
-  SoundSystem system([&](float *f, size_t n) { instrument.Render(f, n); });
+  SoundSystem system([&](float *f, size_t n) { instrument.render(f, n); });
   SongGenerator generator(instrument, particles);
   Interface interface(generator, window);
 
-  std::cout << "Tonality: " << TonalityToString(instrument.GetTonality()) << std::endl;
-  for (int chord : generator.GetProgression()) {
+  std::cout << "Tonality: " << tonalityToString(instrument.getTonality()) << std::endl;
+  for (int chord : generator.getProgression()) {
     std::cout << ((chord + 7 * 100) % 7) + 1 << " ";
   }
   std::cout << std::endl;
 
-  while (window.Update()) {
-    renderer.Begin(100, 100, 100);
-    particles.Render(renderer);
-    interface.Render(renderer);
-    renderer.End();
+  while (window.update()) {
+    renderer.begin(100, 100, 100);
+    particles.render(renderer);
+    interface.render(renderer);
+    renderer.finish();
 
-
-    double dt = renderer.GetDelta();
+    double dt = renderer.getDelta();
     std::cout << dt << std::endl;
-    generator.Update(instrument, dt);
-    particles.Update(dt);
+    generator.update(instrument, dt);
+    particles.update(dt);
   }
 }

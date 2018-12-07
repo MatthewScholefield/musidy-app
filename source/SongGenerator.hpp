@@ -8,28 +8,28 @@
 class SongGenerator {
 public:
   explicit SongGenerator(Instrument &instrument, ParticleSystem &particles);
-  void Update(Instrument &instrument, double dt);
+  void update(Instrument &instrument, double dt);
 
-  const std::vector<int> GetProgression() {
-    return chords_;
+  const std::vector<int> getProgression() {
+    return chords;
   }
-  static int ClosestNote(int note, int source);
+  static int closestNote(int note, int source);
 
-  void SetDelta(float dt) {
-    note_interval_ = dt;
+  void setDelta(float dt) {
+    noteInterval = dt;
   }
 
 private:
-  void UpdateBeat(Instrument &instrument);
-  std::vector<int> GenerateProgression();
-  static std::vector<float> GetChordProbs(int previous);
+  void updateBeat(Instrument &instrument);
+  std::vector<int> generateProgression();
+  static std::vector<float> getChordProbs(int previous);
 
-  double note_interval_ = 0.4;
+  double noteInterval = 0.4;
 
-  double note_timer_ = 0.0;
-  int chord_pos_ = -1;
-  int arpeggio_note_ = 0;
-  int arpeggio_delta_ = 2;
-  std::vector<int> chords_;
-  ParticleSystem &particles_;
+  double noteTimer = 0.0;
+  int chordPos = -1;
+  int arpeggioNote = 0;
+  int arpeggioDelta = 2;
+  std::vector<int> chords;
+  ParticleSystem &particles;
 };

@@ -3,62 +3,62 @@
 #include "Instrument.hpp"
 #include "SoundSystem.hpp"
 
-constexpr int Instrument::kHalfsteps[][Instrument::kNotesPerOctave] = {
+constexpr int Instrument::halfSteps[][Instrument::notesPerOctave] = {
     {0, 2, 4, 5, 7, 9, 11},
     {0, 2, 3, 5, 7, 8, 10},
     {0, 2, 3, 5, 7, 8, 11}
 };
 
-Instrument::Instrument(const std::string &filename, float gain_db) :
-    tsf_(tsf_load_filename(filename.c_str())) {
-  tsf_set_output(tsf_, TSF_STEREO_INTERLEAVED, SoundSystem::kSampleRate, gain_db);
+Instrument::Instrument(const std::string &filename, float gainDb) :
+    soundFont(tsf_load_filename(filename.c_str())) {
+  tsf_set_output(soundFont, TSF_STEREO_INTERLEAVED, SoundSystem::sampleRate, gainDb);
 }
 
-void Instrument::Play(int note, float volume) {
-  int num_octaves = int(std::floor(note / float(kNotesPerOctave)));
-  int scale_degree = note - num_octaves * kNotesPerOctave;
-  int chromatic = kStepsPerOctave * num_octaves + kHalfsteps[int(tonality_)][scale_degree];
-  chromatic += base_note_;
+void Instrument::play(int note, float volume) {
+  int numOctaves = int(std::floor(note / float(notesPerOctave)));
+  int scaleDegree = note - numOctaves * notesPerOctave;
+  int chromatic = stepsPerOctave * numOctaves + halfSteps[int(tonality)][scaleDegree];
+  chromatic += baseNote;
   if (chromatic < 0) {
     throw std::runtime_error("Invalid note: " + std::to_string(note));
   }
-  PlayRaw(chromatic, volume);
+  playRaw(chromatic, volume);
 }
 
-void Instrument::PlayRaw(int note, float volume) {
-  tsf_note_on(tsf_, 0, note, volume);
+void Instrument::playRaw(int note, float volume) {
+  tsf_note_on(soundFont, 0, note, volume);
 }
 
-void Instrument::Render(float *data, size_t n) {
-  tsf_render_float(tsf_, data, int(n), 0);
+void Instrument::render(float *data, size_t n) {
+  tsf_render_float(soundFont, data, int(n), 0);
 }
 
-void Instrument::SetScale(int base_note, Tonality tonality) {
-  base_note_ = base_note;
-  tonality_= tonality;
+void Instrument::setScale(int baseNote, Tonality tonality) {
+  this->baseNote = baseNote;
+  this->tonality = tonality;
 }
 
-void Instrument::PlayChord(int base, float volume) {
-  Play(base, volume);
-  Play(base + 2, volume);
-  Play(base + 4, volume);
+void Instrument::playChord(int base, float volume) {
+  play(base, volume);
+  play(base + 2, volume);
+  play(base + 4, volume);
 }
 
-Tonality Instrument::GetTonality() const {
-  return tonality_;
+Tonality Instrument::getTonality() const {
+  return tonality;
 }
 
-Tonality GetRandomTonality() {
-  return Tonality(SelectSample({0.3f, 0.3f, 0.1f}));
+Tonality getRandomTonality() {
+  return Tonality(selectSample({0.3f, 0.3f, 0.1f}));
 }
 
-std::string TonalityToString(Tonality tonality) {
+std::string tonalityToString(Tonality tonality) {
   switch (tonality) {
-    case Tonality::kMajor:
+    case Tonality::Major:
       return "Major";
-    case Tonality::kMinor:
+    case Tonality::Minor:
       return "Minor";
-    case Tonality::kMinorHarmonic:
+    case Tonality::MinorHarmonic:
       return "Harmonic";
     default:
       throw std::invalid_argument("Invalid tonality: " + std::to_string(int(tonality)));
