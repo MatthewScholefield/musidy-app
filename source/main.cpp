@@ -53,6 +53,7 @@ int main(int argc, char **argv) {
 
 
     double dt = renderer.GetDelta();
+    std::cout << dt << std::endl;
     generator.Update(instrument, dt);
     particles.Update(dt);
   }

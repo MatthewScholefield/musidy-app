@@ -1,6 +1,12 @@
 #include <SDL_timer.h>
 #include "Renderer.hpp"
 
+Renderer::Renderer(SdlWindow &window) :
+    renderer_(SDL_CreateRenderer(window.GetRaw(), -1, SDL_RENDERER_ACCELERATED)),
+    last_tick_time_(SDL_GetPerformanceCounter()), window_(window) {
+  SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
+}
+
 void Renderer::Rect(float x, float y, float width, float height, const Color &color) {
   SDL_Rect rect{tx(x), ty(y), tx(width), ty(height)};
   SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);

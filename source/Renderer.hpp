@@ -13,10 +13,7 @@ struct Color {
 
 class Renderer {
 public:
-  explicit Renderer(SdlWindow &window) :
-  renderer_(SDL_CreateRenderer(window.GetRaw(), -1, SDL_RENDERER_ACCELERATED)), window_(window) {
-    SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
-  }
+  explicit Renderer(SdlWindow &window);
 
   void Begin(Uint8 r, Uint8 g, Uint8 b);
   void End();
@@ -34,7 +31,7 @@ private:
   }
 
   SDL_Renderer *renderer_;
-  uint64_t last_tick_time_ = 0;
+  uint64_t last_tick_time_;
   double delta_ = 0.0;
   SdlWindow &window_;
 };
