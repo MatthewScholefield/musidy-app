@@ -18,6 +18,7 @@ add_library(
         source/Instrument.cpp
         source/SongGenerator.cpp
         source/utils.cpp
+        source/Interface.cpp
 )
 add_executable(
         musidy

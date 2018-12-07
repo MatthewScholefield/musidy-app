@@ -14,12 +14,16 @@ public:
   }
   static int ClosestNote(int note, int source);
 
+  void SetDelta(float dt) {
+    note_interval_ = dt;
+  }
+
 private:
   void UpdateBeat(Instrument &instrument);
   std::vector<int> GenerateProgression();
   static std::vector<float> GetChordProbs(int previous);
 
-  static constexpr double kNoteInterval = 0.4;
+  double note_interval_ = 0.4;
 
   double note_timer_ = 0.0;
   int chord_pos_ = -1;

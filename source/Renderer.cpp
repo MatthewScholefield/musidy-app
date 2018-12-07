@@ -1,14 +1,14 @@
 #include <SDL_timer.h>
 #include "Renderer.hpp"
 
-void Renderer::Rect(int x, int y, int width, int height, const Color &color) {
-  SDL_Rect rect{x, y, width, height};
+void Renderer::Rect(float x, float y, float width, float height, const Color &color) {
+  SDL_Rect rect{tx(x), ty(y), tx(width), ty(height)};
   SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
   SDL_RenderFillRect(renderer_, &rect);
 }
 
-void Renderer::Begin() {
-  SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
+void Renderer::Begin(Uint8 r, Uint8 g, Uint8 b) {
+  SDL_SetRenderDrawColor(renderer_, r, g, b, 255);
   SDL_RenderClear(renderer_);
 }
 

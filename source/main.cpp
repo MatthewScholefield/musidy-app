@@ -6,6 +6,7 @@
 #include "Instrument.hpp"
 #include "CLI11.hpp"
 #include "SongGenerator.hpp"
+#include "Interface.hpp"
 
 
 struct Arguments {
@@ -31,9 +32,10 @@ int main(int argc, char **argv) {
   std::cout << "Starting app..." << std::endl;
 
   SdlWindow window;
-  Renderer renderer(window.GetRaw());
+  Renderer renderer(window);
   SoundSystem system([&](float *f, size_t n) { instrument.Render(f, n); });
   SongGenerator generator(instrument);
+  Interface interface(generator, window);
 
   std::cout << "Tonality: " << TonalityToString(instrument.GetTonality()) << std::endl;
   for (int chord : generator.GetProgression()) {
@@ -42,8 +44,8 @@ int main(int argc, char **argv) {
   std::cout << std::endl;
 
   while (window.Update()) {
-    renderer.Begin();
-    renderer.Rect(50, 50, 50, 50, {0, 0, 255, 255});
+    renderer.Begin(100, 100, 100);
+    interface.Render(renderer);
     renderer.End();
 
     generator.Update(instrument, renderer.GetDelta());

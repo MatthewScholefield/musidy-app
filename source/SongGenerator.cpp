@@ -9,7 +9,7 @@ SongGenerator::SongGenerator(Instrument &instrument) : chords_(GenerateProgressi
 
 void SongGenerator::Update(Instrument &instrument, double dt) {
   if ((note_timer_ -= dt) < 0.0) {
-    note_timer_ = kNoteInterval;
+    note_timer_ = note_interval_;
     UpdateBeat(instrument);
   }
 }
