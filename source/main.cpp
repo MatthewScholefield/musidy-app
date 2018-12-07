@@ -50,7 +50,6 @@ int main(int argc, char **argv) {
         renderer.finish();
 
         double dt = renderer.getDelta();
-        std::cout << dt << std::endl;
         generator.update(instrument, dt);
         particles.update(dt);
     }
