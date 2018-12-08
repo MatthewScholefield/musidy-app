@@ -12,5 +12,5 @@ void Interface::render(Renderer &renderer) {
 void Interface::onTouchInput(float x, float y) {
     bx = std::max(0.f, std::min(1.f, x));
     by = std::max(0.f, std::min(1.f, y));
-    generator.setDelta(0.1f + bx);
+    generator.setDelta(0.1f + 1.f - bx);
 }
