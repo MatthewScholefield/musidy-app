@@ -149,7 +149,7 @@ void SongGenerator::createChordParticles(Tonality tonality, int chord) {
                 0.6f * randFloat() - 0.3f,
                 0.6f * randFloat() - 0.3f,
                 chordColors[int(tonality)][(chord + Instrument::notesPerOctave * 100) % Instrument::notesPerOctave],
-                noteInterval * 4 * 1.2f
+                noteInterval * 4 * 1.5f
         ));
     }
 }
