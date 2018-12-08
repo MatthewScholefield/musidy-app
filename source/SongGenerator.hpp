@@ -15,10 +15,14 @@ public:
     void setDelta(float dt);
 
 private:
+    const float particlesPerChord = 400;
     void updateBeat(Instrument &instrument);
     std::vector<int> generateProgression();
     static std::vector<float> getChordProbs(int previous);
+    void createChordParticles(Tonality tonality, int chord);
 
+    // Colors for chords by tonality
+    static const Color chordColors[tonalityCount][Instrument::notesPerOctave];
     double noteInterval = 0.4;
     double noteTimer = 0.0;
     int chordPos = -1;

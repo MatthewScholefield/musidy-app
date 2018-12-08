@@ -10,6 +10,7 @@ enum class Tonality : int {
     Minor = 1,
     MinorHarmonic = 2
 };
+constexpr int tonalityCount = 3;
 
 Tonality getRandomTonality();
 std::string tonalityToString(Tonality tonality);

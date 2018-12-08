@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
     std::cout << std::endl;
 
     while (window.update()) {
-        renderer.begin(100, 100, 100);
+        renderer.begin(30, 30, 30);
         particles.render(renderer);
         interface.render(renderer);
         renderer.finish();

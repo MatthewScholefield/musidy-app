@@ -2,11 +2,11 @@
 
 
 Particle::Particle(float x, float y, float vx, float vy, Color color, double timeLeft) :
-        x(x), y(y), vx(vx), vy(vy), color(color), timeLeft(timeLeft) {}
+        x(x), y(y), vx(vx), vy(vy), color(color), initialTimeLeft(timeLeft), timeLeft(timeLeft) {}
 
 void Particle::render(Renderer &renderer) {
     Color renderColor(color);
-    renderColor.a = Uint8(255 * std::min(1.0, timeLeft));
+    renderColor.a = Uint8(255 * timeLeft / initialTimeLeft);
     renderer.rect(x, y, 0.01f, 0.01f, renderColor);
 }
 

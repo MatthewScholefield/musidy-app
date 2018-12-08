@@ -3,6 +3,36 @@
 #include "SongGenerator.hpp"
 
 
+const Color SongGenerator::chordColors[tonalityCount][Instrument::notesPerOctave] = {
+        {  // Major
+                {240, 240, 240},
+                {130, 0, 0},
+                {100, 200, 0},
+                {200, 100, 100},
+                {100, 100, 210},
+                {50, 100, 240},
+                {200, 200, 0}
+        }, // Minor
+        {
+                {240, 240, 240},
+                {130, 0, 0},
+                {100, 200, 0},
+                {200, 100, 100},
+                {100, 100, 210},
+                {50, 50, 180},
+                {200, 200, 0}
+        }, // Minor Harmonic
+        {
+                {240, 240, 240},
+                {130, 0, 0},
+                {100, 200, 0},
+                {200, 100, 100},
+                {100, 100, 210},
+                {50, 50, 180},
+                {200, 200, 0}
+        }
+};
+
 SongGenerator::SongGenerator(Instrument &instrument, ParticleSystem &particles) :
         chords(generateProgression()), particles(particles) {
     instrument.setScale(60, getRandomTonality());
@@ -76,15 +106,7 @@ static float randFloat() {
 void SongGenerator::updateBeat(Instrument &instrument) {
     if (arpeggioNote == 0) {
         chordPos = int((chordPos + 1) % chords.size());
-        for (int i = 0; i < 400; ++i) {
-            particles.add(Particle(
-                    -1.f + 3.f * randFloat(),
-                    -1.f + 3.f * randFloat(),
-                    0.6f * randFloat() - 0.3f,
-                    0.6f * randFloat() - 0.3f,
-                    Color({100 + int(155 * randFloat()), 0, 0})
-            ));
-        }
+        createChordParticles(instrument.getTonality(), chords[chordPos]);
         instrument.playChord(chords[chordPos], 0.6f);
     }
     if ((chords[chordPos] + 7 * 100) % 7 != 0 || arpeggioNote == 0 || chordPos != chords.size() - 1) {
@@ -116,5 +138,18 @@ std::vector<float> SongGenerator::getChordProbs(int previous) {
             return {1, 0, 0, 0, 0, 0, 0};
         default:
             throw std::invalid_argument("Invalid chord: " + std::to_string(previous));
+    }
+}
+
+void SongGenerator::createChordParticles(Tonality tonality, int chord) {
+    for (int i = 0; i < particlesPerChord; ++i) {
+        particles.add(Particle(
+                -1.f + 3.f * randFloat(),
+                -1.f + 3.f * randFloat(),
+                0.6f * randFloat() - 0.3f,
+                0.6f * randFloat() - 0.3f,
+                chordColors[int(tonality)][chord],
+                noteInterval * 4 * 1.2f
+        ));
     }
 }

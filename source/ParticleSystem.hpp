@@ -12,7 +12,8 @@ public:
 private:
     float x, y, vx, vy;
     Color color;
-    double timeLeft = 1.0;
+    double timeLeft;
+    double initialTimeLeft;
 };
 
 class ParticleSystem {

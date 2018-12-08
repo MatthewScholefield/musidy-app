@@ -5,9 +5,7 @@
 #include "SdlWindow.hpp"
 
 struct Color {
-    Color(int r, int g, int b, int a = 255);
-
-    uint8_t r, g, b, a;
+    int r = 0, g = 0, b = 0, a = 255;
 };
 
 class Renderer {

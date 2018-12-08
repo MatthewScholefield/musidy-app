@@ -2,8 +2,6 @@
 #include <iostream>
 #include "Renderer.hpp"
 
-Color::Color(int r, int g, int b, int a) :
-        r(uint8_t(r)), g(uint8_t(g)), b(uint8_t(b)), a(uint8_t(a)) {}
 
 Renderer::Renderer(SdlWindow &window) :
         renderer(SDL_CreateRenderer(window.getRaw(), -1, SDL_RENDERER_ACCELERATED)),
@@ -13,7 +11,7 @@ Renderer::Renderer(SdlWindow &window) :
 
 void Renderer::rect(float x, float y, float width, float height, const Color &color) {
     SDL_Rect rect{tx(x), ty(y), int(width * window.getScale()), int(height * window.getScale())};
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_SetRenderDrawColor(renderer, uint8_t(color.r), uint8_t(color.g), uint8_t(color.b), uint8_t(color.a));
     SDL_RenderFillRect(renderer, &rect);
 }
 
