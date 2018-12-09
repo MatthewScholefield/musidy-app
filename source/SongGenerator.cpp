@@ -95,8 +95,8 @@ const std::vector<int> SongGenerator::getProgression() {
     return chords;
 }
 
-void SongGenerator::setDelta(float dt) {
-    noteInterval = dt;
+void SongGenerator::setNoteInterval(float noteInterval) {
+    this->noteInterval = noteInterval;
 }
 
 static float randFloat() {

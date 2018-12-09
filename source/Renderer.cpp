@@ -27,6 +27,14 @@ void Renderer::finish() {
     lastTickTime = timeTime;
 }
 
+float Renderer::getXMargin() {
+    return window.getXOffset() / float(window.getScale());
+}
+
+float Renderer::getYMargin() {
+    return window.getYOffset() / float(window.getScale());
+}
+
 double Renderer::getDelta() {
     return delta;
 }

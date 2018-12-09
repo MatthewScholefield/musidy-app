@@ -48,16 +48,12 @@ public:
     /**
      * @return Ratio of x margin between left edge and coordinate x=0
      */
-    float getXMargin() {
-        return window.getXOffset() / float(window.getScale());
-    }
+    float getXMargin();
 
     /**
      * @return Ratio of y margin between top edge and coordinate y=0
      */
-    float getYMargin() {
-        return window.getYOffset() / float(window.getScale());
-    }
+    float getYMargin();
 
     /**
      * @return Delta time between this frame and the last from

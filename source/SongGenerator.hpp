@@ -38,10 +38,10 @@ public:
     const std::vector<int> getProgression();
 
     /**
-     * Set the delta time between notes
-     * @param dt Time to set as separation between notes
+     * Set the delay time between beats
+     * @param noteInterval Time to set as separation between notes
      */
-    void setDelta(float dt);
+    void setNoteInterval(float noteInterval);
 
 private:
     const float particlesPerChord = 400; // Number of particles to create per chord

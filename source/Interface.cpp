@@ -2,7 +2,7 @@
 
 Interface::Interface(SongGenerator &generator, SdlWindow &window) : generator(generator) {
     window.onTouchInput([&](float x, float y) { onTouchInput(x, y); });
-    generator.setDelta(bx);
+    generator.setNoteInterval(bx);
 }
 
 void Interface::render(Renderer &renderer) {
@@ -12,5 +12,5 @@ void Interface::render(Renderer &renderer) {
 void Interface::onTouchInput(float x, float y) {
     bx = std::max(0.f, std::min(1.f, x));
     by = std::max(0.f, std::min(1.f, y));
-    generator.setDelta(0.1f + 1.f - bx);
+    generator.setNoteInterval(0.1f + 1.f - bx);
 }
