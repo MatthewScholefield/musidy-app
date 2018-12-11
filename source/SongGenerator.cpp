@@ -34,8 +34,8 @@ const Color SongGenerator::chordColors[tonalityCount][Instrument::notesPerOctave
 };
 
 SongGenerator::SongGenerator(Instrument &instrument, ParticleSystem &particles) :
-        chords(generateProgression()), particles(particles) {
-    instrument.setScale(60, getRandomTonality());
+        tonality(getRandomTonality()), chords(generateProgression()), particles(particles) {
+    instrument.setScale(60, tonality);
 }
 
 void SongGenerator::update(Instrument &instrument, double dt) {
@@ -51,6 +51,9 @@ std::vector<int> SongGenerator::generateProgression() {
     std::vector<int> chordFreq = {0, 0, 0, 0, 0, 0, 0};
     do {
         auto probs = getChordProbs(chords.back());
+        if (tonality == Tonality::MinorHarmonic) {
+            probs[2] *= 0.001f;
+        }
 
         for (int i = 0; i < probs.size(); ++i) {
             int freq = chordFreq[i] + 1;

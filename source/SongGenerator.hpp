@@ -81,6 +81,7 @@ private:
     int chordPos = -1;
     int arpeggioNote = 0;
     int arpeggioDelta = 2;
+    Tonality tonality;
     std::vector<int> chords;
     ParticleSystem &particles;
 };
