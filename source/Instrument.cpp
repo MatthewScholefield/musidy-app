@@ -39,6 +39,7 @@ void Instrument::setScale(int baseNote, Tonality tonality) {
 }
 
 void Instrument::playChord(int base, float volume) {
+    play(base - 7, volume);
     play(base, volume);
     play(base + 2, volume);
     play(base + 4, volume);
