@@ -6,7 +6,7 @@ int selectSample(const std::vector<float> &probs) {
     for (auto i : probs) {
         sum += i;
     }
-    float choice = sum * (rand() / float(INT_MAX));
+    float choice = sum * (rand() / float(RAND_MAX));
     for (int i = 0; i < probs.size(); ++i) {
         choice -= probs[i];
         if (choice <= 0) {
