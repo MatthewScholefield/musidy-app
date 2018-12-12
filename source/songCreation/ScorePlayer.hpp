@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include "../Instrument.hpp"
 #include "../ParticleSystem.hpp"
-#include "SongScore.hpp"
+#include "MusicScore.hpp"
 
 /**
  * Plays a dynamically generated song on the given instrument
@@ -59,7 +59,7 @@ private:
     double noteInterval = 0.4;
     double noteTimer = 0.0;
 
-    SongScore score;
+    MusicScore score;
 
     Tonality tonality;
     std::vector<int> chords;

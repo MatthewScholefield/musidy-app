@@ -1,7 +1,7 @@
 #include "ScoreGenerator.hpp"
 #include "../utils.hpp"
 
-SongScore ScoreGenerator::generate() {
+MusicScore ScoreGenerator::generate() {
     int numMeasures = 2;
     int melodyNote = 0;
     float melodyVolume = 0.5f;

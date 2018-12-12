@@ -1,8 +1,8 @@
-#include "SongScore.hpp"
+#include "MusicScore.hpp"
 
-const std::vector<Note> SongScore::noNotes;
+const std::vector<Note> MusicScore::noNotes;
 
-void SongScore::updateBeat(Instrument &instrument) {
+void MusicScore::playBeat(Instrument &instrument) {
     for (int part = 0; part < numSongParts; ++part) {
         --timeTillBeat[part];
         if (timeTillBeat[part] < 0 && !parts[part].empty()) {
@@ -15,7 +15,7 @@ void SongScore::updateBeat(Instrument &instrument) {
     ++beatNum;
 }
 
-void SongScore::add(SongPart part, int note, float volume) {
+void MusicScore::add(SongPart part, int note, float volume) {
     if (note == Instrument::restNote) {
         add(part, std::vector<int>({}), volume);
     } else {
@@ -23,7 +23,7 @@ void SongScore::add(SongPart part, int note, float volume) {
     }
 }
 
-void SongScore::add(SongPart part, const std::vector<int> &notes, float volume) {
+void MusicScore::add(SongPart part, const std::vector<int> &notes, float volume) {
     std::vector<Note> fullNotes;
     fullNotes.reserve(notes.size());
     for (int i : notes) {
@@ -32,7 +32,7 @@ void SongScore::add(SongPart part, const std::vector<int> &notes, float volume) 
     getPart(part).push_back(fullNotes);
 }
 
-const std::vector<Note> &SongScore::getCurrentNotes(SongPart part, bool checkBeat) {
+const std::vector<Note> &MusicScore::getCurrentNotes(SongPart part, bool checkBeat) {
     if (checkBeat && timeTillBeat[int(part)] != 0) {
         return noNotes;
     }
@@ -40,6 +40,6 @@ const std::vector<Note> &SongScore::getCurrentNotes(SongPart part, bool checkBea
     return partLine[(beatNum / beatsPerSongPart[int(part)]) % partLine.size()];
 }
 
-std::deque<std::vector<Note>> &SongScore::getPart(SongPart part) {
+std::deque<std::vector<Note>> &MusicScore::getPart(SongPart part) {
     return parts[int(part)];
 }

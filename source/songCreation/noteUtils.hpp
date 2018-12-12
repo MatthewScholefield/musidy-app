@@ -8,6 +8,19 @@
  */
 int closestNote(int note, int source);
 
-int upperNoteTo(int t, int note);
-int lowerNoteTo(int t, int note);
+/**
+ * Find the scale degree above the given note
+ * @param degree Scale degree
+ * @param note Note to compare to
+ * @return Note of scale degree closest to other note
+ */
+int upperNoteTo(int degree, int note);
+
+/**
+ * Find the scale degree below the given note
+ * @param degree Scale degree
+ * @param note Note to compare to
+ * @return Note of scale degree closest to other note
+ */
+int lowerNoteTo(int degree, int note);
 

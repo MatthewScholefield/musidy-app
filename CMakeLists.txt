@@ -20,7 +20,7 @@ add_library(
         source/utils.cpp
         source/Interface.cpp
         source/ParticleSystem.cpp
-        source/songCreation/SongScore.cpp
+        source/songCreation/MusicScore.cpp
         source/songCreation/ScoreGenerator.cpp
         source/songCreation/chordProgressions.cpp
         source/songCreation/noteUtils.cpp

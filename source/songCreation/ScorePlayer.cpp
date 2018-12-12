@@ -52,7 +52,7 @@ void ScorePlayer::update(Instrument &instrument, double dt) {
         if (!melodyNotes.empty()) {
             createNoteParticles(tonality, melodyNotes[0].note);
         }
-        score.updateBeat(instrument);
+        score.playBeat(instrument);
     }
 }
 
