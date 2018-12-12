@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "SongGenerator.hpp"
+#include "songCreation/ScorePlayer.hpp"
 #include "SdlWindow.hpp"
 #include "Renderer.hpp"
 
@@ -15,7 +15,7 @@ public:
      * @param generator Song generator object
      * @param window SDL window
      */
-    explicit Interface(SongGenerator &generator, SdlWindow &window);
+    explicit Interface(ScorePlayer &generator, SdlWindow &window);
 
     /**
      * Render the interface
@@ -32,5 +32,5 @@ private:
     void onTouchInput(float x, float y);
 
     float bx = 0.5f, by = 0.5f; // Box x and y of input knob
-    SongGenerator &generator;  // Song generator reference to set parameters
+    ScorePlayer &generator;  // Song generator reference to set parameters
 };

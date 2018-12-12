@@ -3,7 +3,7 @@
 #include "Renderer.hpp"
 #include "Instrument.hpp"
 #include "CLI11.hpp"
-#include "SongGenerator.hpp"
+#include "songCreation/ScorePlayer.hpp"
 #include "Interface.hpp"
 #include "SoundSystem.hpp"
 
@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     Renderer renderer(window);
     ParticleSystem particles;
     SoundSystem system([&](float *f, size_t n) { instrument.render(f, n); });
-    SongGenerator generator(instrument, particles);
+    ScorePlayer generator(instrument, particles);
     Interface interface(generator, window);
 
     std::cout << "Tonality: " << tonalityToString(instrument.getTonality()) << std::endl;

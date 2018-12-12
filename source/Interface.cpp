@@ -1,6 +1,6 @@
 #include "Interface.hpp"
 
-Interface::Interface(SongGenerator &generator, SdlWindow &window) : generator(generator) {
+Interface::Interface(ScorePlayer &generator, SdlWindow &window) : generator(generator) {
     window.onTouchInput([&](float x, float y) { onTouchInput(x, y); });
     generator.setNoteInterval(bx);
 }

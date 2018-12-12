@@ -15,3 +15,7 @@ int selectSample(const std::vector<float> &probs) {
     }
     throw std::runtime_error("Statistical anomaly: " + std::to_string(choice));
 }
+
+float randFloat() {
+    return rand() / float(RAND_MAX);
+}

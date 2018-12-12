@@ -16,10 +16,15 @@ add_library(
         source/SoundSystem.cpp
         source/libs/tsf.cpp
         source/Instrument.cpp
-        source/SongGenerator.cpp
+        source/songCreation/ScorePlayer.cpp
         source/utils.cpp
         source/Interface.cpp
-        source/ParticleSystem.cpp source/ParticleSystem.hpp)
+        source/ParticleSystem.cpp
+        source/songCreation/SongScore.cpp
+        source/songCreation/ScoreGenerator.cpp
+        source/songCreation/chordProgressions.cpp
+        source/songCreation/noteUtils.cpp
+)
 add_executable(
         musidy
         source/main.cpp

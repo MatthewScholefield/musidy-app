@@ -2,20 +2,21 @@
 
 #include <vector>
 #include <stdexcept>
-#include "Instrument.hpp"
-#include "ParticleSystem.hpp"
+#include "../Instrument.hpp"
+#include "../ParticleSystem.hpp"
+#include "SongScore.hpp"
 
 /**
  * Plays a dynamically generated song on the given instrument
  */
-class SongGenerator {
+class ScorePlayer {
 public:
     /**
      * Create a new song generator
      * @param instrument The instrument to initialize
      * @param particles The particles system to visualize to
      */
-    explicit SongGenerator(Instrument &instrument, ParticleSystem &particles);
+    explicit ScorePlayer(Instrument &instrument, ParticleSystem &particles);
 
     /**
      * Update the song with the given delta time
@@ -23,14 +24,6 @@ public:
      * @param dt Amount of time of the song to play
      */
     void update(Instrument &instrument, double dt);
-
-    /**
-     * Find the note closest to another note, ignoring octaves
-     * @param note Scale degree (without octave)
-     * @param source Note to map to
-     * @return Scale degree offset by some octaves
-     */
-    static int closestNote(int note, int source);
 
     /**
      * @return The chord progression that's being played
@@ -48,27 +41,6 @@ private:
     const float particlesPerNote = 40; // Number of particles to create per chord
 
     /**
-     * Called ever beat of the song
-     * @param instrument Instrument to play to
-     */
-    void updateBeat(Instrument &instrument);
-
-    /**
-     * Generate a nice sounding chord progression using
-     * probabilities and discouraging repeated chords
-     * @return Chord degree integers as vector. May also be higher octaves
-     */
-    std::vector<int> generateProgression();
-
-    /**
-     * Get the probability distribution for the
-     * next chord given the previous chord
-     * @param previous Previous chord degree
-     * @return Next chord probability distribution
-     */
-    static std::vector<float> getChordProbs(int previous);
-
-    /**
      * Create the particles for a chord in the given tonality
      * @param tonality Tonality of  key
      * @param chord Chord root degree
@@ -82,19 +54,13 @@ private:
      */
     void createNoteParticles(Tonality tonality, int note);
 
-    static int calcNextMelodyNote(int chord, int note);
-    static float calcNextMelodyVolume(float volume);
-
     // Colors for chords by tonality
     static const Color chordColors[tonalityCount][Instrument::notesPerOctave];
     double noteInterval = 0.4;
     double noteTimer = 0.0;
-    int chordPos = -1;
-    int arpeggioNote = 0;
-    int arpeggioDelta = 2;
-    int melodyNote = 0;
-    float melodyVolume = 0.7f;
-    bool slideInProgress = false;
+
+    SongScore score;
+
     Tonality tonality;
     std::vector<int> chords;
     ParticleSystem &particles;

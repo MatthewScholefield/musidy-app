@@ -15,6 +15,9 @@ Instrument::Instrument(const std::string &filename, float gainDb) :
 }
 
 void Instrument::play(int note, float volume) {
+    if (note == restNote) {
+        return;
+    }
     int numOctaves = int(std::floor(note / float(notesPerOctave)));
     int scaleDegree = note - numOctaves * notesPerOctave;
     int chromatic = stepsPerOctave * numOctaves + halfSteps[int(tonality)][scaleDegree];
@@ -36,13 +39,6 @@ void Instrument::render(float *data, size_t n) {
 void Instrument::setScale(int baseNote, Tonality tonality) {
     this->baseNote = baseNote;
     this->tonality = tonality;
-}
-
-void Instrument::playChord(int base, float volume) {
-    play(base - 7, volume);
-    play(base, volume);
-    play(base + 2, volume);
-    play(base + 4, volume);
 }
 
 Tonality Instrument::getTonality() const {

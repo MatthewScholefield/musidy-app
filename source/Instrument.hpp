@@ -33,6 +33,7 @@ std::string tonalityToString(Tonality tonality);
  */
 class Instrument {
 public:
+    static constexpr int restNote = -1000;
     /**
      * Universal sound constants based on western music
      */
@@ -58,13 +59,6 @@ public:
      * @param volume Loudness of note
      */
     void play(int note, float volume = 1.f);
-
-    /**
-     * Play all 3 notes int  a chord in root position
-     * @param base Root of chord relative to scale
-     * @param volume Loudness of all notes in chord
-     */
-    void playChord(int base, float volume = 1.f);
 
     /**
      * Play a chromatic note
