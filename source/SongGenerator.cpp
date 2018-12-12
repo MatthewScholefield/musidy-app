@@ -19,7 +19,7 @@ const Color SongGenerator::chordColors[tonalityCount][Instrument::notesPerOctave
                 {100, 200, 0},
                 {200, 100, 100},
                 {100, 100, 210},
-                {50, 50, 180},
+                {50, 50,  180},
                 {200, 200, 0}
         }, // Minor Harmonic
         {
@@ -28,7 +28,7 @@ const Color SongGenerator::chordColors[tonalityCount][Instrument::notesPerOctave
                 {100, 200, 0},
                 {200, 100, 100},
                 {100, 100, 210},
-                {50, 50, 180},
+                {50, 50,  180},
                 {200, 200, 0}
         }
 };
@@ -103,7 +103,44 @@ void SongGenerator::setNoteInterval(float noteInterval) {
 }
 
 static float randFloat() {
-    return rand() / float(INT_MAX);
+    return rand() / float(RAND_MAX);
+}
+
+template<typename T, typename...Args>
+T min(T a, T b, Args...args) {
+    return min(min(a, b), args...);
+}
+
+template<typename T>
+T min(T a, T b) {
+    return a < b ? a : b;
+}
+
+template<typename T>
+T minTo(T t, T a, T b) {
+    return abs(t - a) < abs(t - b) ? a : b;
+}
+
+template<typename T>
+T minTo(T t, T a) {
+    return a;
+}
+
+template<typename T, typename...Args>
+T minTo(T t, T a, T b, Args...args) {
+    return minTo(t, minTo(t, a, b), args...);
+}
+
+
+
+int lowerNoteTo(int t, int note) {
+    while (note < t - 7) {
+        note += 7;
+    }
+    while (note > t) {
+        note -= 7;
+    }
+    return note;
 }
 
 void SongGenerator::updateBeat(Instrument &instrument) {
@@ -112,6 +149,19 @@ void SongGenerator::updateBeat(Instrument &instrument) {
         createChordParticles(instrument.getTonality(), chords[chordPos]);
         instrument.playChord(chords[chordPos], 0.6f);
     }
+
+    if (rand() % 5 != 0 || slideInProgress) {
+        if (!slideInProgress && arpeggioNote == 0 && rand() % 5 == 0) {
+            slideInProgress = true;
+        } else {
+            slideInProgress = false;
+            melodyNote = calcNextMelodyNote(chords[chordPos], melodyNote);
+        }
+        melodyVolume = calcNextMelodyVolume(melodyVolume);
+        createNoteParticles(instrument.getTonality(), melodyNote);
+        instrument.play(melodyNote, melodyVolume);
+    }
+
     if ((chords[chordPos] + 7 * 100) % 7 != 0 || arpeggioNote == 0 || chordPos != chords.size() - 1) {
         instrument.play(chords[chordPos] + arpeggioNote, 0.6f);
     }
@@ -155,4 +205,39 @@ void SongGenerator::createChordParticles(Tonality tonality, int chord) {
                 noteInterval * 4 * 1.5f
         ));
     }
+}
+
+void SongGenerator::createNoteParticles(Tonality tonality, int note) {
+    float partX = randFloat();
+    float partY = randFloat();
+    for (int i = 0; i < particlesPerChord; ++i) {
+        particles.add(Particle(
+                partX + 0.3f * randFloat() - 0.15f,
+                partY + 0.3f * randFloat() - 0.15f,
+                0.4f * randFloat() - 0.2f,
+                0.4f * randFloat() - 0.2f,
+                chordColors[int(tonality)][(note + Instrument::notesPerOctave * 100) % Instrument::notesPerOctave],
+                noteInterval * 4 * 1.5f
+        ));
+    }
+}
+
+int SongGenerator::calcNextMelodyNote(int chord, int note) {
+    chord += 7;
+    int a = lowerNoteTo(note, chord);
+    int b = lowerNoteTo(note, chord + 2);
+    int c = lowerNoteTo(note, chord + 4);
+    int lowerOption = minTo(note, a, b, c);
+    int upperOption = minTo(note, a + 7, b + 7, c + 7);
+    int options[] = {lowerOption, upperOption};
+    const int melodyRange = 12, melodyMin = 0;
+    float pos = std::min(1.f, std::max(0.f, (note - chord - melodyMin) / float(melodyRange)));
+    return options[selectSample({sqrt(pos), sqrt(1.f - pos)})];
+}
+
+float SongGenerator::calcNextMelodyVolume(float volume) {
+    const float melMin = 0.3f, melMax = 0.8f;
+    float volPos = std::max(0.f, std::min(1.f, (volume - melMin) / (melMax - melMin)));
+    int voldir = selectSample({sqrt(volPos), 0.1f, sqrt(1.f - volPos)}) - 1;
+    return volume + voldir * 0.1f * randFloat();
 }

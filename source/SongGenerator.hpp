@@ -45,6 +45,7 @@ public:
 
 private:
     const float particlesPerChord = 400; // Number of particles to create per chord
+    const float particlesPerNote = 40; // Number of particles to create per chord
 
     /**
      * Called ever beat of the song
@@ -74,6 +75,16 @@ private:
      */
     void createChordParticles(Tonality tonality, int chord);
 
+    /**
+     * Create the particles for a note in the given tonality
+     * @param tonality Tonality of  key
+     * @param note Note being visualizeds
+     */
+    void createNoteParticles(Tonality tonality, int note);
+
+    static int calcNextMelodyNote(int chord, int note);
+    static float calcNextMelodyVolume(float volume);
+
     // Colors for chords by tonality
     static const Color chordColors[tonalityCount][Instrument::notesPerOctave];
     double noteInterval = 0.4;
@@ -81,6 +92,9 @@ private:
     int chordPos = -1;
     int arpeggioNote = 0;
     int arpeggioDelta = 2;
+    int melodyNote = 0;
+    float melodyVolume = 0.7f;
+    bool slideInProgress = false;
     Tonality tonality;
     std::vector<int> chords;
     ParticleSystem &particles;
