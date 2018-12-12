@@ -37,7 +37,8 @@ const Color ScorePlayer::chordColors[tonalityCount][Instrument::notesPerOctave] 
 };
 
 ScorePlayer::ScorePlayer(Instrument &instrument, ParticleSystem &particles) :
-        tonality(getRandomTonality()), chords(), particles(particles), score(ScoreGenerator(tonality).generate()) {
+        tonality(getRandomTonality()), chords(generateProgression(tonality)), particles(particles),
+        score(ScoreGenerator(chords).generate()) {
     instrument.setScale(60, tonality);
 }
 

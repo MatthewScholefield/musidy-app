@@ -59,9 +59,8 @@ private:
     double noteInterval = 0.4;
     double noteTimer = 0.0;
 
-    MusicScore score;
-
     Tonality tonality;
     std::vector<int> chords;
     ParticleSystem &particles;
+    MusicScore score;
 };

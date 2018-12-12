@@ -12,10 +12,16 @@
 class ScoreGenerator {
 public:
     /**
-     * Create a new music score generator
+     * Create a new music score generator from a tonality
      * @param tonality Tonality of song to generate
      */
     explicit ScoreGenerator(Tonality tonality) : chords(generateProgression(tonality)) {}
+
+    /**
+     * Create a new music score generator from chords
+     * @param chords Array of chord notes
+     */
+    explicit ScoreGenerator(std::vector<int> chords) : chords(std::move(chords)) {}
 
     /**
      * Generate the notes in the whole song
