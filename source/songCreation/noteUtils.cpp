@@ -17,22 +17,22 @@ int closestNote(int note, int source) {
     return bestNote;
 }
 
-int upperNoteTo(int degree, int note) {
-    while (note > degree - 7) {
-        note -= 7;
+int upperNoteTo(int note, int degree) {
+    while (degree >= note - 7) {
+        degree -= 7;
     }
-    while (note < degree) {
-        note += 7;
+    while (degree < note) {
+        degree += 7;
     }
-    return note;
+    return degree;
 }
 
-int lowerNoteTo(int degree, int note) {
-    while (note < degree - 7) {
-        note += 7;
+int lowerNoteTo(int note, int degree) {
+    while (degree <= note - 7) {
+        degree += 7;
     }
-    while (note > degree) {
-        note -= 7;
+    while (degree > note) {
+        degree -= 7;
     }
-    return note;
+    return degree;
 }
