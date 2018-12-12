@@ -80,7 +80,7 @@ void ScorePlayer::createChordParticles(Tonality tonality, int chord) {
 void ScorePlayer::createNoteParticles(Tonality tonality, int note) {
     float partX = randFloat();
     float partY = randFloat();
-    for (int i = 0; i < particlesPerChord; ++i) {
+    for (int i = 0; i < particlesPerNote; ++i) {
         particles.add(Particle(
                 partX + 0.3f * randFloat() - 0.15f,
                 partY + 0.3f * randFloat() - 0.15f,
