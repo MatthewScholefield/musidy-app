@@ -73,5 +73,6 @@ void ScoreGenerator::generateHarmonyMeasure(int chordPos) {
 
 void ScoreGenerator::generateBassMeasure(int chordPos) {
     int root = chords[chordPos];
-    score.add(SongPart::Chords, {root - 7, root, root + 2, root + 4}, 0.6f);
+    score.add(SongPart::Bass, root - 7, 0.6f);
+    score.add(SongPart::Chords, {root, root + 2, root + 4}, 0.6f);
 }
