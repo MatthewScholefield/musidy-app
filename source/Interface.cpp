@@ -1,8 +1,9 @@
 #include "Interface.hpp"
 
-Interface::Interface(ScorePlayer &generator, SdlWindow &window) : generator(generator) {
+Interface::Interface(ScorePlayer &generator, SdlWindow &window, Instrument &instrument) :
+generator(generator), instrument(instrument) {
     window.onTouchInput([&](float x, float y) { onTouchInput(x, y); });
-    generator.setNoteInterval(bx);
+    onTouchInput(bx, by);
 }
 
 void Interface::render(Renderer &renderer) {
@@ -13,4 +14,5 @@ void Interface::onTouchInput(float x, float y) {
     bx = std::max(0.f, std::min(1.f, x));
     by = std::max(0.f, std::min(1.f, y));
     generator.setNoteInterval(0.1f + 1.f - bx);
+    instrument.setVolumeMultiplier(1.2f - 1.2f * by);
 }

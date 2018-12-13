@@ -79,10 +79,17 @@ public:
      */
     Tonality getTonality() const;
 
+    /**
+     * Set the amount of volume reduction/amplification
+     * @param volumeMultiplier Value to multiply all note volumes by
+     */
+    void setVolumeMultiplier(float volumeMultiplier);
+
 private:
     tsf *soundFont;  // Soundfont renderer
     int baseNote = 60;  // Note of scale
     Tonality tonality = Tonality::Major;  // Tonality of key
+    float volumeMultiplier = 1.f;
 
     static const int halfSteps[][notesPerOctave];  // Number of halfsteps in relation to root
 };

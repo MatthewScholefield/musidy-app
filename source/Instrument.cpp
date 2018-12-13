@@ -29,7 +29,7 @@ void Instrument::play(int note, float volume) {
 }
 
 void Instrument::playRaw(int note, float volume) {
-    tsf_note_on(soundFont, 0, note, volume);
+    tsf_note_on(soundFont, 0, note, std::max(0.f, std::min(1.f, volume * volumeMultiplier)));
 }
 
 void Instrument::render(float *data, size_t n) {
@@ -43,6 +43,10 @@ void Instrument::setScale(int baseNote, Tonality tonality) {
 
 Tonality Instrument::getTonality() const {
     return tonality;
+}
+
+void Instrument::setVolumeMultiplier(float volumeMultiplier) {
+    this->volumeMultiplier = volumeMultiplier;
 }
 
 Tonality getRandomTonality() {

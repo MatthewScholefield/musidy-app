@@ -14,8 +14,9 @@ public:
      * Create new user interface object
      * @param generator Song generator object
      * @param window SDL window
+     * @param instrument Instrument to control
      */
-    explicit Interface(ScorePlayer &generator, SdlWindow &window);
+    explicit Interface(ScorePlayer &generator, SdlWindow &window, Instrument &instrument);
 
     /**
      * Render the interface
@@ -33,4 +34,5 @@ private:
 
     float bx = 0.5f, by = 0.5f; // Box x and y of input knob
     ScorePlayer &generator;  // Song generator reference to set parameters
+    Instrument &instrument;
 };

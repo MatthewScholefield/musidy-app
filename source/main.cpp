@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
     ParticleSystem particles;
     SoundSystem system([&](float *f, size_t n) { instrument.render(f, n); });
     ScorePlayer generator(instrument, particles);
-    Interface interface(generator, window);
+    Interface interface(generator, window, instrument);
 
     std::cout << "Tonality: " << tonalityToString(instrument.getTonality()) << std::endl;
     for (int chord : generator.getProgression()) {
