@@ -2,39 +2,11 @@
 #include "../utils.hpp"
 
 MusicScore ScoreGenerator::generate() {
-    int numMeasures = 2;
-    int melodyNote = 0;
-    float melodyVolume = 0.5f;
     for (int measureNum = 0; measureNum < numMeasures; ++measureNum) {
-        bool slideInProgress = false;
         for (int chordPos = 0; chordPos < chords.size(); ++chordPos) {
-            int root = chords[chordPos];
-            score.add(SongPart::Chords, {root - 7, root, root + 2, root + 4}, 0.6f);
-            for (int noteNum = 0; noteNum < 4; ++noteNum) {
-                if (rand() % 5 != 0 || slideInProgress) {
-                    if (!slideInProgress && noteNum == 0 && rand() % 5 == 0) {
-                        slideInProgress = true;
-                    } else {
-                        slideInProgress = false;
-                        melodyNote = calcNextMelodyNote(root, melodyNote);
-                    }
-                    melodyVolume = calcNextMelodyVolume(melodyVolume);
-                    score.add(SongPart::Melody, melodyNote, melodyVolume);
-                } else {
-                    score.add(SongPart::Melody);
-                }
-            }
-            if (chordPos != chords.size() - 1 || (root + 7 * 100) % 7 != 0) {
-                score.add(SongPart::Harmony, root + 0, 0.6f);
-                score.add(SongPart::Harmony, root + 2, 0.6f);
-                score.add(SongPart::Harmony, root + 4, 0.6f);
-                score.add(SongPart::Harmony, root + 2, 0.6f);
-            } else {
-                score.add(SongPart::Harmony, root + 0, 0.6f);
-                score.add(SongPart::Harmony);
-                score.add(SongPart::Harmony);
-                score.add(SongPart::Harmony);
-            }
+            generateBassMeasure(chordPos);
+            generateMelodyMeasure(chordPos);
+            generateHarmonyMeasure(chordPos);
         }
     }
     return score;
@@ -58,4 +30,41 @@ float ScoreGenerator::calcNextMelodyVolume(float volume) {
     float volPos = std::max(0.f, std::min(1.f, (volume - melMin) / (melMax - melMin)));
     int voldir = selectSample({sqrt(volPos), 0.1f, sqrt(1.f - volPos)}) - 1;
     return volume + voldir * 0.1f * randFloat();
+}
+
+void ScoreGenerator::generateMelodyMeasure(int chordPos) {
+    for (int noteNum = 0; noteNum < 4; ++noteNum) {
+        if (rand() % 5 != 0 || slideInProgress) {
+            if (!slideInProgress && noteNum == 0 && rand() % 5 == 0) {
+                slideInProgress = true;
+            } else {
+                slideInProgress = false;
+                melodyNote = calcNextMelodyNote(chords[chordPos], melodyNote);
+            }
+            melodyVolume = calcNextMelodyVolume(melodyVolume);
+            score.add(SongPart::Melody, melodyNote, melodyVolume);
+        } else {
+            score.add(SongPart::Melody);
+        }
+    }
+}
+
+void ScoreGenerator::generateHarmonyMeasure(int chordPos) {
+    int root = chords[chordPos];
+    if (chordPos != chords.size() - 1 || (root + 7 * 100) % 7 != 0) {
+        score.add(SongPart::Harmony, root + 0, 0.6f);
+        score.add(SongPart::Harmony, root + 2, 0.6f);
+        score.add(SongPart::Harmony, root + 4, 0.6f);
+        score.add(SongPart::Harmony, root + 2, 0.6f);
+    } else {
+        score.add(SongPart::Harmony, root + 0, 0.6f);
+        score.add(SongPart::Harmony);
+        score.add(SongPart::Harmony);
+        score.add(SongPart::Harmony);
+    }
+}
+
+void ScoreGenerator::generateBassMeasure(int chordPos) {
+    int root = chords[chordPos];
+    score.add(SongPart::Chords, {root - 7, root, root + 2, root + 4}, 0.6f);
 }
