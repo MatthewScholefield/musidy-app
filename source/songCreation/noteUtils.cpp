@@ -36,3 +36,7 @@ int lowerNoteTo(int note, int degree) {
     }
     return degree;
 }
+
+int getDegree(int note) {
+    return (note + 100 * 7) % 7;
+}

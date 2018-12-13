@@ -13,16 +13,23 @@ MusicScore ScoreGenerator::generate() {
 }
 
 int ScoreGenerator::calcNextMelodyNote(int chord, int note) {
-    chord += 7;
-    int a = lowerNoteTo(note, chord);
-    int b = lowerNoteTo(note, chord + 2);
-    int c = lowerNoteTo(note, chord + 4);
-    int lowerOption = minTo(note, a, b, c);
-    int upperOption = minTo(note, a + 7, b + 7, c + 7);
-    int options[] = {lowerOption, upperOption};
-    const int melodyRange = 12, melodyMin = 0;
+    int lower = minTo(note, lowerNoteTo(note, chord), lowerNoteTo(note, chord + 2), lowerNoteTo(note, chord + 4));
+    int upper = minTo(note, upperNoteTo(note, chord), upperNoteTo(note, chord + 2), upperNoteTo(note, chord + 4));
+
+    const int melodyRange = 12, melodyMin = 8;
     float pos = std::min(1.f, std::max(0.f, (note - chord - melodyMin) / float(melodyRange)));
-    return options[selectSample({sqrt(pos), sqrt(1.f - pos)})];
+
+    std::vector<int> options = {lower, upper};
+    std::vector<float> probs = {pos, 1.f - pos};
+
+    if (getDegree(note) == getDegree(chord) ||
+        getDegree(note) == getDegree(chord + 2) ||
+        getDegree(note) == getDegree(chord + 4)) {
+        options.push_back(note);
+        probs.push_back(0.1f);
+    }
+
+    return options[selectSample(probs)];
 }
 
 float ScoreGenerator::calcNextMelodyVolume(float volume) {

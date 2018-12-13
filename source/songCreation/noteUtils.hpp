@@ -24,3 +24,10 @@ int upperNoteTo(int note, int degree);
  */
 int lowerNoteTo(int note, int degree);
 
+/**
+ * Return the scale degree of a note from 0 to 6
+ * @param note Note (possibly in another octave)
+ * @return Scale degree
+ */
+int getDegree(int note);
+
