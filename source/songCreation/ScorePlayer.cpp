@@ -54,6 +54,9 @@ void ScorePlayer::update(Instrument &instrument, double dt) {
             createNoteParticles(tonality, melodyNotes[0].note);
         }
         score.playBeat(instrument);
+        if (score.getNumLoops() > 0) {
+            score = ScoreGenerator(getRandomTonality()).generate();
+        }
     }
 }
 

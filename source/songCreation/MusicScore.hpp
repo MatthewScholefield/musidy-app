@@ -59,6 +59,10 @@ public:
      */
     const std::vector<Note> &getCurrentNotes(SongPart part, bool checkBeat = true);
 
+    int getNumLoops() {
+        return beatNum / getPart(SongPart::Chords).size();
+    }
+
 private:
     static const std::vector<Note> noNotes;
     std::deque<std::vector<Note>> &getPart(SongPart part);
