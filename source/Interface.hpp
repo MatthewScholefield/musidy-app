@@ -32,7 +32,7 @@ private:
      */
     void onTouchInput(float x, float y);
 
-    float bx = 0.5f, by = 0.5f; // Box x and y of input knob
+    float bx = 0.5f, by = 0.8f; // Box x and y of input knob
     ScorePlayer &generator;  // Song generator reference to set parameters
     Instrument &instrument;
 };
